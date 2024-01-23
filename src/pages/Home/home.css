@@ -29,3 +29,79 @@
 
 
 
+@media (max-width: 1025px) {
+    .wrapper-chat {
+        padding: 50px;
+    }
+    .wrapper-secure {
+        padding: 50px;
+    }
+    .wrapper-footer{
+        padding-left: 50px;
+        padding-right:  50px;
+    }
+  }
+@media (max-width: 770px) {
+    .cards {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    .wrapper-chat {
+        padding: 0;
+    }
+    .wrapper-secure {
+        padding: 0;
+    }
+    .wrapper-footer{
+        padding-left: 20px;
+        padding-right:  0;
+    }
+  }
+@media (max-width: 500px) {
+    .wrapper-chat {
+        padding: 0;
+        flex-direction: column;
+        height: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .lolchara1 {
+        width: 100%;
+    }
+    .wrapper-text{
+        width: 100%;
+        padding-top: 50px;
+    }
+    .wrapper-secure {
+        padding: 0;
+        flex-direction: column;
+    }
+    .wrapper-footer{
+        padding-left: 20px;
+        padding-right:  0;
+        flex-direction: column;
+        height: auto;
+        padding-bottom: 50px;
+    }
+    .lolchara2 {
+        width: 100%;
+    }
+    .secure2 {
+        width: 100%;
+    }
+    .Guaranteed{
+        letter-spacing: normal;
+    }
+    .cards {
+        display: grid;
+        grid-template-columns: none;
+    }
+    .wrapper-customize{
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .card-custom {
+        border-radius: 10%;
+    }
+  }

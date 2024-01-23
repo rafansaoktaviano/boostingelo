@@ -1,5 +1,5 @@
 import React from "react";
-import background from "./../../assets/jinx.jpg";
+import background from "./../../assets/jinx2.jpeg";
 import "./home.css";
 import { FaCheck } from "react-icons/fa";
 import { BsCheck2All } from "react-icons/bs";
@@ -37,7 +37,7 @@ const Home = () => {
             Ascend with Confidence: Unlock Your True Rank with Our Expert Elo
             Boosting
           </h1>
-          <div className="flex justify-center">
+          <div className="flex justify-center hover:scale-110 transition ease-in delay-100">
             <button className="mt-[20px] gap-5 flex items-center font-bold px-[75px] py-[20px] rounded-2xl bg-button text-buttonText">
               <FaCartShopping className="text-[24px]" />
               Purchase Now
@@ -66,8 +66,8 @@ const Home = () => {
             <img src={tftlogo} alt="" />
           </div>
         </div>
-        <div className="w-full mt-[200px] flex justify-center ">
-          <div className="text-center  shadow-md shadow-green-500/80   w-[400px] h-[250px] py-[20px] gap-4     text-white flex flex-col rounded-l-xl  items-center border border-highlight">
+        <div className="w-full mt-[200px] flex wrapper-customize justify-center ">
+          <div className="text-center card-custom  shadow-md shadow-green-500/80   w-[400px] h-[250px] py-[20px] gap-4     text-white flex flex-col rounded-l-xl  items-center border border-highlight">
             <div className="w-[50px] h-[50px] rounded-full shadow-2xl  border border-highlight flex justify-center items-center">
               <FaCalendarCheck className="text-highlight text-[24px]" />
             </div>
@@ -79,7 +79,7 @@ const Home = () => {
               make sure to use our addons
             </p>
           </div>
-          <div className="text-center w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col   items-center border border-highlight border-l-0">
+          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col   items-center border border-highlight border-l-0">
             <div className="w-[50px] h-[50px] rounded-full   border border-highlight flex justify-center items-center">
               <FaCheck className="text-highlight text-[24px]" />
             </div>
@@ -91,7 +91,7 @@ const Home = () => {
               of payment
             </p>
           </div>
-          <div className="text-center w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col  rounded-r-3xl  items-center border border-highlight border-l-0">
+          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col  rounded-r-3xl  items-center border border-highlight border-l-0">
             <div className="w-[50px] h-[50px] rounded-full   border border-highlight flex justify-center items-center">
               <BsCheck2All className="text-highlight text-[34px]" />
             </div>
@@ -111,13 +111,13 @@ const Home = () => {
           <FaGooglePay className="text-[100px] text-[#C4C4C4C4]" />
         </div>
       </div>
-      <div className="w-full h-screen bg-background flex px-[200px] items-center ">
-        <div className="block w-[50%]">
+      <div className="w-full wrapper-chat h-screen bg-background flex px-[200px] items-center ">
+        <div className="block w-[50%] lolchara1">
           <img src={lolchara1} alt="" className="block" />
         </div>
-        <div className="w-[50%] h-full flex flex-col justify-center  gap-10">
-          <div className="text-white flex gap-5 items-start bg-[#242629] p-[20px] rounded-xl">
-            <PiChatsCircleBold className="text-[40px] mt-[5px]  max-w-[30px] max-h-[30px]" />
+        <div className="w-[50%] wrapper-text h-full flex flex-col justify-center  gap-10 ">
+          <div className="text-white flex gap-5 items-start bg-[#242629] p-[20px]  rounded-xl">
+            <PiChatsCircleBold className="text-[40px] mt-[5px]  max-w-[40px] max-h-[40px]" />
             <div>
               <h1 className="text-[24px] font-bold text-main tracking-wide ">
                 Chat with your booster
@@ -158,14 +158,14 @@ const Home = () => {
         </div>
       </div>
       <div className="h-auto w-full bg-[#242629] py-[100px]">
-        <h1 className="font-bold text-center text-[64px] tracking-widest   text-main ">
-          Satisfaction Guaranteed
+        <h1 className="font-bold text-center text-[64px] tracking-widest  Guaranteed  text-main ">
+          Guaranteed
         </h1>
         <p className="text-center text-[#75dab4] tracking-widest text-[24px] font-bold">
           BOOSTINGELO
         </p>
-        <div className="  flex  w-full h-full  px-[200px] mt-[100px] text-white">
-          <div className="w-[50%] h-full flex flex-col gap-10    ">
+        <div className="wrapper-secure  flex  w-full h-full  px-[200px] mt-[100px] text-white">
+          <div className="w-[50%] secure2  h-full flex flex-col gap-10    ">
             <div className="flex bg-[#242629] p-[20px] rounded-lg gap-5">
               <MdSignalWifi4BarLock className="text-highlight text-[50px]" />
               <div>
@@ -198,7 +198,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="w-[50%] flex justify-center ">
+          <div className="w-[50%] lolchara2 flex justify-center ">
             <img src={lolchara2} alt="" className="" />
           </div>
         </div>

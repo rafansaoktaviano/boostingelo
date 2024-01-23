@@ -2,7 +2,7 @@ import React from "react";
 import lol from "./../../assets/lollogo.png";
 const Footer = () => {
   return (
-    <footer className="w-full h-[300px] bg-background pt-[70px] px-[200px] flex gap-20">
+    <footer className="w-full h-[300px] wrapper-footer bg-background pt-[70px] px-[200px] flex gap-20">
       <div className="">
         <h1 className="text-white font-bold text-[18px] mb-[20px]">Services</h1>
         <div className="flex flex-col gap-2">
@@ -55,7 +55,7 @@ const Footer = () => {
       </div>
       <div>
         <h1 className="text-white font-bold text-[18px] mb-[20px]">
-          Become a Booster ?
+          Become a Booster
         </h1>
         <div className="flex flex-col gap-2">
           <span className="text-secondary hover:text-white cursor-pointer">

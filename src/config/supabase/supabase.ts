@@ -6,3 +6,10 @@ const supabaseKey : string = process.env.REACT_APP_SUPABASE_KEY || "";
 const supabase : SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 export default supabase;
+
+
+
+
+
+
+
