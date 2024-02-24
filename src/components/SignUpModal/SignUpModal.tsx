@@ -37,6 +37,13 @@ const SignUpModal: React.FC<LoginModalProps> = ({
     console.log(data);
     console.log(error);
   };
+
+  const onLoginGoogle = async () => {
+    let { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+  };
+
   const customStyles = {
     content: {
       width: "800px",
@@ -62,11 +69,12 @@ const SignUpModal: React.FC<LoginModalProps> = ({
   return (
     <Modal isOpen={isOpen} style={customStyles} onRequestClose={onRequestClose}>
       <div className="w-full h-full flex">
-        <div className="h-full w-[50%] bg-white">
+        <div className="h-full w-[50%] bg-background">
           <img
             src={signupbackground}
             alt=""
             className="object-cover w-full h-full"
+            loading="lazy"
           />
         </div>
         <div className="w-[50%] p-[20px] text-white">
@@ -124,7 +132,10 @@ const SignUpModal: React.FC<LoginModalProps> = ({
             <h1>OR</h1>
             <div className="w-[40%] h-[1px] bg-secondary"></div>
           </div>
-          <button className="flex justify-center items-center w-full rounded-xl bg-white text-black p-[10px] mt-[20px] font-bold gap-2">
+          <button
+            onClick={() => onLoginGoogle()}
+            className="flex justify-center items-center w-full rounded-xl bg-white text-black p-[10px] mt-[20px] font-bold gap-2"
+          >
             <img
               src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
               alt=""

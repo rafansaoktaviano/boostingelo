@@ -19,15 +19,17 @@ import lolchara1 from "./../../assets/lolchara1.png";
 import lolchara2 from "./../../assets/lolchara2.png";
 // stripe payment icon
 import { FaCcVisa } from "react-icons/fa";
-import { FaApplePay } from "react-icons/fa";
+import { FaApplePay } from "react-icons/fa"; 
 import { FaCcMastercard } from "react-icons/fa6";
 import { FaGooglePay } from "react-icons/fa6";
 import { FaCcStripe } from "react-icons/fa";
+
+
 const Home = () => {
   return (
     <main>
-      <div className="w-full h-screen relative flex justify-center">
-        <img src={background} alt="" className="w-full h-full" />
+      <div className="w-full h-screen relative flex justify-center bg-background">
+        <img src={background} alt="" className="w-full h-full" loading="lazy" />
         <div className="gradient-overlay"></div>
         <div className="absolute top-[40%] text-center">
           <h1 className=" leading-tight font-bold  text-main text-[50px]">
@@ -45,7 +47,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="h-auto w-full  bg-[#242629] py-[100px]  ">
+      <div className="h-auto w-full  bg-[#151921] py-[100px]  ">
         <h1 className="font-bold text-center text-[64px] tracking-widest mt-[-50px]    text-main ">
           SERVICES
         </h1>
@@ -117,7 +119,7 @@ const Home = () => {
         </div>
         <div className="w-[50%] wrapper-text h-full flex flex-col justify-center  gap-10 ">
           <div className="text-white flex gap-5 items-start bg-[#242629] p-[20px]  rounded-xl">
-            <PiChatsCircleBold className="text-[40px] mt-[5px]  max-w-[40px] max-h-[40px]" />
+            <PiChatsCircleBold className="text-[40px] mt-[5px] text-highlight  max-w-[40px] max-h-[40px]" />
             <div>
               <h1 className="text-[24px] font-bold text-main tracking-wide ">
                 Chat with your booster
@@ -130,7 +132,7 @@ const Home = () => {
             </div>
           </div>
           <div className="text-white flex gap-5 items-start bg-[#242629] p-[20px] rounded-xl">
-            <HiOutlineChartBar className="text-[40px] mt-[5px]  max-w-[30px] max-h-[30px] " />
+            <HiOutlineChartBar className="text-[40px] mt-[5px] text-highlight  max-w-[30px] max-h-[30px] " />
             <div>
               <h1 className="text-[24px] font-bold text-main">
                 Track your order progress
@@ -143,7 +145,7 @@ const Home = () => {
             </div>
           </div>
           <div className="text-white flex gap-5 items-start bg-[#242629] p-[20px] rounded-xl">
-            <BsPeople className="text-[40px] mt-[5px]  max-w-[30px] max-h-[30px] " />
+            <BsPeople className="text-[40px] mt-[5px] text-highlight  max-w-[30px] max-h-[30px] " />
             <div>
               <h1 className="text-[24px] font-bold text-main">
                 Manage your hero preferences
@@ -157,7 +159,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="h-auto w-full bg-[#242629] py-[100px]">
+      <div className="h-auto w-full bg-[#151921] py-[100px]">
         <h1 className="font-bold text-center text-[64px] tracking-widest  Guaranteed  text-main ">
           Guaranteed
         </h1>
@@ -214,3 +216,48 @@ const Home = () => {
 };
 
 export default Home;
+
+// const ranks = {
+//   'Bronze': [5, 6, 7, 8], // Prices for each division in Bronze
+//   'Silver': [9, 10, 11, 12], // Prices for each division in Silver
+//   // ... and so on for each rank
+// };
+
+// function calculatePrice(currentRank, currentDivision, desiredRank, desiredDivision) {
+//   let totalCost = 0;
+//   let processingRank = currentRank;
+//   let processingDivision = currentDivision;
+
+//   // Check if the upgrade is within the same rank
+//   if (currentRank === desiredRank) {
+//       for (let i = currentDivision; i < desiredDivision; i++) {
+//           totalCost += ranks[processingRank][i - 1];
+//       }
+//       return totalCost;
+//   }
+
+//   // Calculate cost for different ranks
+//   while (true) {
+//       totalCost += ranks[processingRank][processingDivision - 1];
+
+//       // Check if we've reached the desired rank and division
+//       if (processingRank === desiredRank && processingDivision === desiredDivision) {
+//           break;
+//       }
+
+//       // Move to the next division or rank
+//       if (processingDivision < 4) {
+//           processingDivision++;
+//       } else {
+//           processingDivision = 1;
+//           let rankKeys = Object.keys(ranks);
+//           processingRank = rankKeys[rankKeys.indexOf(processingRank) + 1];
+//       }
+//   }
+
+//   return totalCost;
+// }
+
+// // Example usage
+// let price = calculatePrice('Bronze', 1, 'Bronze', 3); // Current: Bronze 1, Desired: Bronze 3
+// console.log(`The price for boosting is $${price}`);

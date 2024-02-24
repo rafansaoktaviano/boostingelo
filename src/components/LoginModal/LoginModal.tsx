@@ -22,6 +22,9 @@ const LoginModal: React.FC<LoginModalProps> = ({
 }) => {
   const [emailForm, setEmailForm] = useState("");
   const [password, setPassword] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [isResetSend, setIsResetSend] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -29,9 +32,6 @@ const LoginModal: React.FC<LoginModalProps> = ({
     let { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
-
-    console.log(data);
-    console.log(error);
   };
 
   const onSubmitLogin = async (event: React.FormEvent) => {
@@ -51,6 +51,23 @@ const LoginModal: React.FC<LoginModalProps> = ({
       dispatch(setEmail(data.user?.email || ""));
       onRequestClose();
     }
+  };
+
+  const handleResetPassword = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    let { data, error } = await supabase.auth.resetPasswordForEmail(
+      forgotEmail,
+      { redirectTo: "http://localhost:3000" }
+    );
+
+    if (error) {
+      return toastError("This email not registered");
+    }
+
+    toastSuccess("Reset Password has been sent to your email");
+
+    setIsResetSend(true);
   };
 
   const customStyles = {
@@ -79,74 +96,128 @@ const LoginModal: React.FC<LoginModalProps> = ({
   return (
     <Modal isOpen={isOpen} style={customStyles} onRequestClose={onRequestClose}>
       <div className="w-full h-full flex">
-        <div className="w-[50%] bg-white">
+        <div className="w-[50%] bg-background">
           <img
             src={loginbackground}
             alt=""
             className="object-cover w-full h-full"
+            loading="lazy"
           />
         </div>
         <div className="w-[50%] p-[20px] text-white">
-          <h1 className="text-[34px] font-bold text-center mt-[40px]">
-            Sign In
-          </h1>
-          <h1 className="text-center mt-[20px] text-secondary">
-            Don't have an account ?{" "}
-            <span
-              onClick={() => onSignUpOpen()}
-              className="font-bold text-highlight cursor-pointer "
-            >
-              Create an account{" "}
-            </span>
-          </h1>
-          <form onSubmit={onSubmitLogin}>
-            <div className="mt-[20px]">
-              <label htmlFor="email" className="cursor-pointer font-bold ">
-                Email
-              </label>
-              <input
-                onChange={(e) => setEmailForm(e.target.value)}
-                type="email"
-                id="email"
-                required
-                className="w-full cursor-pointer placeholder-slate-500  bg-opacity-60 bg-[#3d3241]  p-[10px] rounded-lg mt-[10px]  "
-                placeholder="John@gmail.com"
-              />
-            </div>
-            <div className="mt-[20px]">
-              <label htmlFor="password" className="cursor-pointer font-bold ">
-                Password
-              </label>
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                id="password"
-                required
-                className="w-full cursor-pointer  bg-opacity-60 bg-[#3d3241]  p-[10px] rounded-lg mt-[10px] placeholder-white "
-              />
-            </div>
-            <h1 className="font-medium text-highlight cursor-pointer text-end mt-[20px]">
-              Forgot Password ?
-            </h1>
-            <button
-              type="submit"
-              className="font-bold flex justify-center items-center w-full rounded-xl bg-button p-[10px] mt-[20px]"
-            >
-              Sign In
-            </button>
-          </form>
-          <div className="flex gap-5 items-center mt-[30px]">
-            <div className="w-[40%] h-[1px] bg-secondary"></div>
-            <h1>OR</h1>
-            <div className="w-[40%] h-[1px] bg-secondary"></div>
-          </div>
-          <button onClick={() => onLoginGoogle()} className="flex justify-center items-center w-full rounded-xl bg-white text-black p-[10px] mt-[20px] font-bold gap-2">
-            <img
-              src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
-              alt=""
-            />{" "}
-            Google
-          </button>
+          {isForgotPassword === false ? (
+            <>
+              <h1 className="text-[34px] font-bold text-center mt-[40px]">
+                Sign In
+              </h1>
+              <h1 className="text-center mt-[20px] text-secondary">
+                Don't have an account ?{" "}
+                <span
+                  onClick={() => onSignUpOpen()}
+                  className="font-bold text-highlight cursor-pointer "
+                >
+                  Create an account{" "}
+                </span>
+              </h1>
+              <form onSubmit={onSubmitLogin}>
+                <div className="mt-[20px]">
+                  <label htmlFor="email" className="cursor-pointer font-bold ">
+                    Email
+                  </label>
+                  <input
+                    onChange={(e) => setEmailForm(e.target.value)}
+                    type="email"
+                    id="email"
+                    required
+                    className="w-full cursor-pointer placeholder-slate-500  bg-opacity-60 bg-[#3d3241]  p-[10px] rounded-lg mt-[10px]  "
+                    placeholder="John@gmail.com"
+                  />
+                </div>
+                <div className="mt-[20px]">
+                  <label
+                    htmlFor="password"
+                    className="cursor-pointer font-bold "
+                  >
+                    Password
+                  </label>
+                  <input
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                    id="password"
+                    required
+                    className="w-full cursor-pointer  bg-opacity-60 bg-[#3d3241]  p-[10px] rounded-lg mt-[10px] placeholder-white "
+                  />
+                </div>
+                <h1
+                  onClick={() => setIsForgotPassword(true)}
+                  className="font-medium text-highlight cursor-pointer text-end mt-[20px]"
+                >
+                  Forgot Password ?
+                </h1>
+                <button
+                  type="submit"
+                  className="font-bold flex justify-center items-center w-full rounded-xl bg-button p-[10px] mt-[20px]"
+                >
+                  Sign In
+                </button>
+              </form>
+              <div className="flex gap-5 items-center mt-[30px]">
+                <div className="w-[40%] h-[1px] bg-secondary"></div>
+                <h1>OR</h1>
+                <div className="w-[40%] h-[1px] bg-secondary"></div>
+              </div>
+              <button
+                onClick={() => onLoginGoogle()}
+                className="flex justify-center items-center w-full rounded-xl bg-white text-black p-[10px] mt-[20px] font-bold gap-2"
+              >
+                <img
+                  src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
+                  alt=""
+                />{" "}
+                Google
+              </button>
+            </>
+          ) : (
+            <>
+              <h1 className="text-[34px] font-bold text-center mt-[40px]">
+                Forgot Password
+              </h1>
+              <form action="" onSubmit={(e) => handleResetPassword(e)}>
+                <div className="mt-[20px]">
+                  <label
+                    htmlFor="forgotemail"
+                    className="cursor-pointer font-bold "
+                  >
+                    Email
+                  </label>
+
+                  <input
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    type="email"
+                    id="forgotemail"
+                    required
+                    className="w-full cursor-pointer placeholder-slate-500  bg-opacity-60 bg-[#3d3241]  p-[10px] rounded-lg mt-[10px]  "
+                    placeholder="John@gmail.com"
+                  />
+                </div>
+                {isResetSend === true ? (
+                  <div className="flex p-2 justify-center items-center rounded-lg bg-highlight bg-opacity-10 mt-[20px]">
+                    <h1 className="text-highlight">
+                      Successfully reset password.
+                    </h1>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+                <button
+                  type="submit"
+                  className="font-bold flex justify-center items-center w-full rounded-xl bg-button p-[10px] mt-[20px]"
+                >
+                  Reset Password
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </Modal>
