@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import backgroundValElo from "./../../assets/valorant-eloboost-bg.jpg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ImParagraphLeft } from "react-icons/im";
 import { IoPeopleSharp } from "react-icons/io5";
 import { RiComputerFill } from "react-icons/ri";
@@ -9,11 +9,25 @@ import { FaGreaterThan } from "react-icons/fa";
 import supabase from "../../config/supabase/supabase";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import {
+  disabledAscendant,
   disabledBronze,
+  disabledDiamond,
+  disabledGold,
   disabledIron,
+  disabledPlatinum,
   disabledSilver,
 } from "../../utils/disabledRank";
+import {
+  disabledButtonAscendant,
+  disabledButtonBronze,
+  disabledButtonDiamond,
+  disabledButtonGold,
+  disabledButtonIron,
+  disabledButtonPlatinum,
+  disabledButtonSilver,
+} from "../../utils/disableButtonRank";
 
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 interface Service {
   id: number;
   price: number;
@@ -48,16 +62,7 @@ const ValorantEloBoost = () => {
     useState<string>("1");
   const [currentRR, setCurrentRR] = useState<string>("0-25RR");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  console.log(
-    selectedRank.rank === "Silver" ||
-      selectedRank.rank === "Gold" ||
-      selectedRank.rank === "Platinum" ||
-      selectedRank.rank === "Diamond" ||
-      selectedRank.rank === "Ascendant" ||
-      selectedRank.rank === "Immortal"
-  );
-  console.log(selectedTargetDivision);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const rankList = async () => {
       try {
@@ -78,8 +83,6 @@ const ValorantEloBoost = () => {
     rankList();
   }, []);
 
-  // const [totalCost, setTotalCost] = useState(0);
-
   useEffect(() => {
     const calculatePrice = (
       currentRank: string,
@@ -94,7 +97,6 @@ const ValorantEloBoost = () => {
       for (const rank of ranks) {
         for (const service of rank.service) {
           if (foundCurrent) {
-            // setTotalCost((e) => e + service.price);
             totalCost += service.price;
             if (
               rank.rank === targetRank &&
@@ -142,6 +144,192 @@ const ValorantEloBoost = () => {
     (trapPrice - trapPrice * 0.2).toFixed(0),
     10
   );
+
+  useEffect(() => {
+    if (selectedRank.rank === "Bronze") {
+      if (selectedTargetRank.rank === "Iron") {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-iron.webp",
+          rank: "Iron",
+        });
+      }
+    } else if (selectedRank.rank === "Silver") {
+      if (
+        selectedTargetRank.rank === "Bronze" ||
+        selectedTargetRank.rank === "Iron"
+      ) {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-silver.webp",
+          rank: "Silver",
+        });
+      }
+    } else if (selectedRank.rank === "Gold") {
+      if (
+        selectedTargetRank.rank === "Bronze" ||
+        selectedTargetRank.rank === "Iron" ||
+        selectedTargetRank.rank === "Silver"
+      ) {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-gold.webp",
+          rank: "Gold",
+        });
+      }
+    } else if (selectedRank.rank === "Diamond") {
+      if (
+        selectedTargetRank.rank === "Bronze" ||
+        selectedTargetRank.rank === "Iron" ||
+        selectedTargetRank.rank === "Silver" ||
+        selectedTargetRank.rank === "Gold" ||
+        selectedTargetRank.rank === "Platinum"
+      ) {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-diamond.webp",
+          rank: "Diamond",
+        });
+      }
+    } else if (selectedRank.rank === "Platinum") {
+      if (
+        selectedTargetRank.rank === "Iron" ||
+        selectedTargetRank.rank === "Bronze" ||
+        selectedTargetRank.rank === "Silver" ||
+        selectedTargetRank.rank === "Gold"
+      ) {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-platinum.webp",
+          rank: "Platinum",
+        });
+      }
+    } else if (selectedRank.rank === "Ascendant") {
+      if (
+        selectedTargetRank.rank === "Iron" ||
+        selectedTargetRank.rank === "Bronze" ||
+        selectedTargetRank.rank === "Silver" ||
+        selectedTargetRank.rank === "Gold" ||
+        selectedTargetRank.rank === "Platinum" ||
+        selectedTargetRank.rank === "Diamond"
+      ) {
+        setSelectedTargetRank({
+          rank_image:
+            "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-ascendant.webp",
+          rank: "Ascendant",
+        });
+      }
+    }
+
+    if (selectedRank.rank === selectedTargetRank.rank) {
+      // division jump + 1
+      if (selectedTargetDivision === selectedDivision) {
+        if (selectedTargetDivision === "2") {
+          setSelectedTargetDivision("3");
+        } else if (selectedTargetDivision === "1") {
+          setSelectedTargetDivision("2");
+        }
+      }
+    }
+    // rank jump if division is 3
+    if (selectedRank.rank === selectedTargetRank.rank) {
+      if (selectedDivision === "3") {
+        if (selectedRank.rank === "Iron") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-bronze.webp",
+            rank: "Bronze",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Bronze") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-silver.webp",
+            rank: "Silver",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Silver") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-gold.webp",
+            rank: "Gold",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Gold") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-platinum.webp",
+            rank: "Platinum",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Platinum") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-diamond.webp",
+            rank: "Diamond",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Diamond") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-ascendant.webp",
+            rank: "Ascendant",
+          });
+          setSelectedTargetDivision("1");
+        } else if (selectedRank.rank === "Ascendant") {
+          setSelectedTargetRank({
+            rank_image:
+              "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-Immortal.webp",
+            rank: "Immortal",
+          });
+          setSelectedTargetDivision("1");
+        }
+      } else if (selectedDivision === "2") {
+        setSelectedTargetDivision("3");
+      }
+    }
+  }, [
+    selectedRank,
+    selectedTargetRank,
+    selectedTargetDivision,
+    selectedDivision,
+  ]);
+
+  const handleCheckout = async () => {
+    try {
+      const dataBody = {
+        totalPrice: discountedPrice,
+        currentRank: selectedRank.rank,
+        currentDivision: selectedDivision,
+        targetRank: selectedTargetRank.rank,
+        targetDivision: selectedTargetDivision,
+        currentRR: currentRR,
+        typeService: "Solo Boost",
+        winMatch: 0,
+        agentRequest: null,
+        priority: false,
+        stream: false,
+        offlineChat: true,
+      };
+      const { data, error } = await supabase.functions.invoke(
+        "stripeCheckout",
+        {
+          body: JSON.stringify({ totalPrice: discountedPrice }),
+        }
+      );
+
+      if (data) {
+        window.location.href = data.url;
+      } else if (error) {
+        console.error("Error during checkout:", error);
+      }
+
+      console.log(data);
+      console.log(error);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-backgroundSecondary  h-auto w-full ">
@@ -244,13 +432,6 @@ const ValorantEloBoost = () => {
                     : ""
                 } `}
                 onClick={() => {
-                  if (selectedTargetRank.rank === "Iron") {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-bronze.webp",
-                      rank: "Bronze",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-bronze.webp",
@@ -270,16 +451,6 @@ const ValorantEloBoost = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  if (
-                    selectedTargetRank.rank === "Iron" ||
-                    selectedTargetRank.rank === "Bronze"
-                  ) {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-silver.webp",
-                      rank: "Silver",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-silver.webp",
@@ -299,17 +470,6 @@ const ValorantEloBoost = () => {
                     : ""
                 } `}
                 onClick={() => {
-                  if (
-                    selectedTargetRank.rank === "Iron" ||
-                    selectedTargetRank.rank === "Bronze" ||
-                    selectedTargetRank.rank === "Silver"
-                  ) {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-gold.webp",
-                      rank: "Gold",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-gold.webp",
@@ -329,18 +489,6 @@ const ValorantEloBoost = () => {
                     : ""
                 } `}
                 onClick={() => {
-                  if (
-                    selectedTargetRank.rank === "Iron" ||
-                    selectedTargetRank.rank === "Bronze" ||
-                    selectedTargetRank.rank === "Silver" ||
-                    selectedTargetRank.rank === "Gold"
-                  ) {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-platinum.webp",
-                      rank: "Platinum",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-platinum.webp",
@@ -360,19 +508,6 @@ const ValorantEloBoost = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  if (
-                    selectedTargetRank.rank === "Iron" ||
-                    selectedTargetRank.rank === "Bronze" ||
-                    selectedTargetRank.rank === "Silver" ||
-                    selectedTargetRank.rank === "Gold" ||
-                    selectedTargetRank.rank === "Platinum"
-                  ) {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-diamond.webp",
-                      rank: "Diamond",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-diamond.webp",
@@ -392,20 +527,6 @@ const ValorantEloBoost = () => {
                     : ""
                 } `}
                 onClick={() => {
-                  if (
-                    selectedTargetRank.rank === "Iron" ||
-                    selectedTargetRank.rank === "Bronze" ||
-                    selectedTargetRank.rank === "Silver" ||
-                    selectedTargetRank.rank === "Gold" ||
-                    selectedTargetRank.rank === "Platinum" ||
-                    selectedTargetRank.rank === "Diamond"
-                  ) {
-                    setSelectedTargetRank({
-                      rank_image:
-                        "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-ascendant.webp",
-                      rank: "Ascendant",
-                    });
-                  }
                   setSelectedRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-ascendant.webp",
@@ -460,13 +581,6 @@ const ValorantEloBoost = () => {
                   selectedDivision === "2" ? "bg-white border rounded-xl" : ""
                 }`}
                 onClick={() => {
-                  if (
-                    (selectedRank.rank === selectedTargetRank.rank &&
-                      selectedDivision === "2") ||
-                    selectedDivision === "1"
-                  ) {
-                    setSelectedTargetDivision("3");
-                  }
                   setSelectedDivision("2");
                 }}
               >
@@ -517,41 +631,25 @@ const ValorantEloBoost = () => {
             <h1 className="mt-[50px] text-highlight">CHOOSE TARGET RANK</h1>
             <div className=" flex gap-3 mt-[20px] flex-wrap">
               <button
-                disabled={
-                  selectedRank.rank === "Bronze" ||
-                  selectedRank.rank === "Silver" ||
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonIron(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`${disabledIron(
-                  selectedRank.rank
+                  selectedRank.rank,
+                  selectedDivision
                 )} w-[75px] h-[75px] ${
                   selectedTargetRank.rank === "Iron"
                     ? "bg-white border rounded-xl "
                     : ""
-                } ${
-                  selectedRank.rank === "Bronze" ||
-                  selectedRank.rank === "Silver" ||
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
-                onClick={() =>
+                } `}
+                onClick={() => {
                   setSelectedTargetRank({
                     rank_image:
                       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-iron.webp",
                     rank: "Iron",
-                  })
-                }
+                  });
+                }}
               >
                 <img
                   src="https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-iron.webp"
@@ -559,30 +657,16 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
-                disabled={
-                  selectedRank.rank === "Silver" ||
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonBronze(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`${disabledBronze(
-                  selectedRank.rank
+                  selectedRank.rank,
+                  selectedDivision
                 )} w-[75px] h-[75px] ${
                   selectedTargetRank.rank === "Bronze"
                     ? "bg-white border rounded-xl"
-                    : ""
-                } ${
-                  selectedRank.rank === "Silver" ||
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
                     : ""
                 } `}
                 onClick={() =>
@@ -599,30 +683,18 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
-                disabled={
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonSilver(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`w-[75px] h-[75px]  ${disabledSilver(
-                  selectedRank.rank
+                  selectedRank.rank,
+                  selectedDivision
                 )} ${
                   selectedTargetRank.rank === "Silver"
                     ? "bg-white border rounded-xl"
                     : ""
-                } ${
-                  selectedRank.rank === "Gold" ||
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
+                } ${disabledSilver(selectedRank.rank, selectedDivision)}`}
                 onClick={() =>
                   setSelectedTargetRank({
                     rank_image:
@@ -637,26 +709,15 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
-                disabled={
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonGold(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`w-[75px] h-[75px] ${
                   selectedTargetRank.rank === "Gold"
                     ? "bg-white border rounded-xl"
                     : ""
-                } ${
-                  selectedRank.rank === "Platinum" ||
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
+                } ${disabledGold(selectedRank.rank, selectedDivision)}`}
                 onClick={() =>
                   setSelectedTargetRank({
                     rank_image:
@@ -671,24 +732,15 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
-                disabled={
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonPlatinum(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`w-[75px] h-[75px] ${
                   selectedTargetRank.rank === "Platinum"
                     ? "bg-white border rounded-xl"
                     : ""
-                } ${
-                  selectedRank.rank === "Diamond" ||
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
+                } ${disabledPlatinum(selectedRank.rank, selectedDivision)}`}
                 onClick={() =>
                   setSelectedTargetRank({
                     rank_image:
@@ -703,22 +755,16 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
-                disabled={
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? true
-                    : false
-                }
+                disabled={disabledButtonDiamond(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`w-[75px] h-[75px]  ${
                   selectedTargetRank.rank === "Diamond"
                     ? "bg-white border rounded-xl"
                     : ""
-                } ${
-                  selectedRank.rank === "Ascendant" ||
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
+                } 
+                ${disabledDiamond(selectedRank.rank, selectedDivision)}`}
                 onClick={() =>
                   setSelectedTargetRank({
                     rank_image:
@@ -733,15 +779,15 @@ const ValorantEloBoost = () => {
                 ></img>
               </button>
               <button
+                disabled={disabledButtonAscendant(
+                  selectedRank.rank,
+                  selectedDivision
+                )}
                 className={`w-[75px] h-[75px] ${
                   selectedTargetRank.rank === "Ascendant"
                     ? "bg-white border rounded-xl"
                     : ""
-                } ${
-                  selectedRank.rank === "Immortal"
-                    ? "bg-zinc-500/30  rounded-xl"
-                    : ""
-                }`}
+                } ${disabledAscendant(selectedRank.rank, selectedDivision)}`}
                 onClick={() =>
                   setSelectedTargetRank({
                     rank_image:
@@ -950,7 +996,10 @@ const ValorantEloBoost = () => {
             10% Discount Applied
           </h1>
           <div className="px-[10px]">
-            <button className="w-full bg-button text-white py-[10px] rounded-xl">
+            <button
+              onClick={() => handleCheckout()}
+              className="w-full bg-button text-white py-[10px] rounded-xl"
+            >
               Checkout Now
             </button>
           </div>

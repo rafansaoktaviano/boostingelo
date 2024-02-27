@@ -1,4 +1,4 @@
-export const disabledIron = (
+export const disabledButtonIron = (
   selectedRank: string,
   selectedDivision: string
 ) => {
@@ -10,11 +10,11 @@ export const disabledIron = (
     selectedRank === "Diamond" ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl "
-    : "cursor-pointer";
+    ? true
+    : false;
 };
 
-export const disabledBronze = (
+export const disabledButtonBronze = (
   selectedRank: string,
   selectedDivision: string
 ) => {
@@ -25,10 +25,10 @@ export const disabledBronze = (
     selectedRank === "Diamond" ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };
-export const disabledSilver = (
+export const disabledButtonSilver = (
   selectedRank: string,
   selectedDivision: string
 ) => {
@@ -38,11 +38,11 @@ export const disabledSilver = (
     selectedRank === "Diamond" ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };
 
-export const disabledGold = (
+export const disabledButtonGold = (
   selectedRank: string,
   selectedDivision: string
 ) => {
@@ -51,10 +51,10 @@ export const disabledGold = (
     selectedRank === "Diamond" ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };
-export const disabledPlatinum = (
+export const disabledButtonPlatinum = (
   selectedRank: string,
   selectedDivision: string
 ) => {
@@ -62,25 +62,25 @@ export const disabledPlatinum = (
     selectedRank === "Diamond" ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };
-export const disabledDiamond = (
+export const disabledButtonDiamond = (
   selectedRank: string,
   selectedDivision: string
 ) => {
-  return (selectedRank === "DiamondF" && selectedDivision === "3") ||
+  return (selectedRank === "Diamond" && selectedDivision === "3") ||
     selectedRank === "Ascendant" ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };
-export const disabledAscendant = (
+export const disabledButtonAscendant = (
   selectedRank: string,
   selectedDivision: string
 ) => {
   return (selectedRank === "Ascendant" && selectedDivision === "3") ||
     selectedRank === "Immortal"
-    ? "cursor-not-allowed bg-zinc-500/30  rounded-xl"
-    : "cursor-pointer";
+    ? true
+    : false;
 };

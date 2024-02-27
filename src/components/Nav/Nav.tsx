@@ -3,7 +3,7 @@ import "./nav.css";
 import LoginModal from "../LoginModal/LoginModal";
 import SignUpModal from "../SignUpModal/SignUpModal";
 import { GoPersonFill } from "react-icons/go";
-import { handleLogin } from "../../services/authService";
+
 import { useAppSelector } from "../../redux/App/hooks";
 import supabase from "../../config/supabase/supabase";
 import { useAppDispatch } from "../../redux/App/hooks";
