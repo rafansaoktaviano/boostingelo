@@ -16,6 +16,7 @@ module.exports = {
         highlight: "#75dab4",
         cardBg: "#16161a",
         backgroundSecondary: "#151921",
+        backgroundLow: "#242629",
       },
     },
   },

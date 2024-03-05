@@ -4,6 +4,9 @@ import signupbackground from "./.././../assets/signupbackground.jpeg";
 import supabase from "../../config/supabase/supabase";
 import { toast } from "react-toastify";
 import { toastError, toastSuccess } from "../../utils/toast";
+import { setIsLogin } from "../../redux/Features/auth";
+import { useAppDispatch } from "../../redux/App/hooks";
+import { useDispatch } from "react-redux";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -19,6 +22,8 @@ const SignUpModal: React.FC<LoginModalProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useAppDispatch();
+
   const onSubmitSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -32,6 +37,8 @@ const SignUpModal: React.FC<LoginModalProps> = ({
     } else {
       toastSuccess("Sign Up Success");
       toastSuccess(`Welcome, ${email}`);
+      dispatch(setIsLogin(true));
+      onRequestClose();
     }
 
     console.log(data);

@@ -19,11 +19,10 @@ import lolchara1 from "./../../assets/lolchara1.png";
 import lolchara2 from "./../../assets/lolchara2.png";
 // stripe payment icon
 import { FaCcVisa } from "react-icons/fa";
-import { FaApplePay } from "react-icons/fa"; 
+import { FaApplePay } from "react-icons/fa";
 import { FaCcMastercard } from "react-icons/fa6";
 import { FaGooglePay } from "react-icons/fa6";
 import { FaCcStripe } from "react-icons/fa";
-
 
 const Home = () => {
   return (
@@ -68,8 +67,8 @@ const Home = () => {
             <img src={tftlogo} alt="" />
           </div>
         </div>
-        <div className="w-full mt-[200px] flex wrapper-customize justify-center ">
-          <div className="text-center card-custom  shadow-md shadow-green-500/80   w-[400px] h-[250px] py-[20px] gap-4     text-white flex flex-col rounded-l-xl  items-center border border-highlight">
+        <div className="w-full mt-[200px] flex wrapper-customize justify-center  gap-5">
+          <div className="text-center card-custom  shadow-md shadow-green-500/80   w-[400px] h-[250px] py-[20px] gap-4     text-white flex flex-col rounded-xl  items-center border border-highlight">
             <div className="w-[50px] h-[50px] rounded-full shadow-2xl  border border-highlight flex justify-center items-center">
               <FaCalendarCheck className="text-highlight text-[24px]" />
             </div>
@@ -81,7 +80,7 @@ const Home = () => {
               make sure to use our addons
             </p>
           </div>
-          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col   items-center border border-highlight border-l-0">
+          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col rounded-xl   items-center border border-highlight ">
             <div className="w-[50px] h-[50px] rounded-full   border border-highlight flex justify-center items-center">
               <FaCheck className="text-highlight text-[24px]" />
             </div>
@@ -93,7 +92,7 @@ const Home = () => {
               of payment
             </p>
           </div>
-          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col  rounded-r-3xl  items-center border border-highlight border-l-0">
+          <div className="text-center card-custom w-[400px] h-[250px] py-[20px] gap-4  shadow-md shadow-green-500/80   text-white flex flex-col  rounded-xl  items-center border border-highlight ">
             <div className="w-[50px] h-[50px] rounded-full   border border-highlight flex justify-center items-center">
               <BsCheck2All className="text-highlight text-[34px]" />
             </div>

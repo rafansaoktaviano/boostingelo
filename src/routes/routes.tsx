@@ -4,6 +4,8 @@ import ValorantEloBoost from "../pages/ValorantEloBoost/ValorantEloBoost";
 import ValorantDuoBoost from "../pages/ValorantDuoBoost/ValorantDuoBoost";
 import ValorantWinBoost from "../pages/ValorantWinBoost/ValorantWinBoost";
 import ValorantPlacementBoost from "../pages/ValorantPlacementBoost/ValorantPlacementBoost";
+import DashboardCustomer from "../pages/DashboardCustomer/DashboardCustomer";
+import Dashboard from "../components/Dashboard/Dashboard";
 
 const routes = [
   <Route path="/" element={<Home />} />,
@@ -13,6 +15,14 @@ const routes = [
   <Route
     path="valorant/placement-boost"
     element={<ValorantPlacementBoost />}
+  />,
+  <Route
+    path="/dashboard"
+    element={
+      <DashboardCustomer>
+        <Dashboard />
+      </DashboardCustomer>
+    }
   />,
 ];
 

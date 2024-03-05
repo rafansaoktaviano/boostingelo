@@ -17,6 +17,7 @@ import {
   disabledPlatinum,
   disabledSilver,
 } from "../../utils/disabledRank";
+
 import {
   disabledButtonAscendant,
   disabledButtonBronze,
@@ -28,6 +29,7 @@ import {
 } from "../../utils/disableButtonRank";
 
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+
 interface Service {
   id: number;
   price: number;
@@ -46,7 +48,7 @@ interface GamesService {
 const ValorantEloBoost = () => {
   const location = useLocation();
   const currentLocation = location.pathname;
-  const [ranks, setRanks] = useState<GamesService[]>([]);
+  const [ranks, setRanks] = useState<GamesService[] | null>(null);
   const [selectedRank, setSelectedRank] = useState({
     rank_image:
       "https://cgtifxvessdrpnjdldcw.supabase.co/storage/v1/object/public/rank_image/valorant/valorant-sssssssssssssss.webp",
@@ -62,7 +64,14 @@ const ValorantEloBoost = () => {
     useState<string>("1");
   const [currentRR, setCurrentRR] = useState<string>("0-25RR");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const navigate = useNavigate();
+  const [priority, setPriority] = useState<boolean>(false);
+  const [liveStream, setLiveStream] = useState<boolean>(false);
+  const [soloBoost, setSoloBoost] = useState<boolean>(false);
+  const [noStack, setNoStack] = useState<boolean>(false);
+  const [extraWin, setExtraWin] = useState<boolean>(false);
+  const [offlineChat, setOfflineChat] = useState<boolean>(true);
+  const [temp, setTemp] = useState(0);
+
   useEffect(() => {
     const rankList = async () => {
       try {
@@ -93,29 +102,39 @@ const ValorantEloBoost = () => {
     ) => {
       let foundCurrent = false;
       let totalCost = 0;
+      if (ranks) {
+        for (const rank of ranks) {
+          for (const service of rank.service) {
+            if (foundCurrent) {
+              totalCost += service.price;
 
-      for (const rank of ranks) {
-        for (const service of rank.service) {
-          if (foundCurrent) {
-            totalCost += service.price;
-            if (
-              rank.rank === targetRank &&
-              service.division === targetDivision
-            ) {
-              return setTotalPrice(totalCost);
+              if (priority === true) totalCost += service.price * 0.2;
+              if (liveStream === true) totalCost += service.price * 0.2;
+              if (soloBoost === true) totalCost += service.price * 0.4;
+              if (noStack === true) totalCost += service.price * 0.25;
+              if (extraWin === true) totalCost += service.price * 0.2;
+
+              if (
+                rank.rank === targetRank &&
+                service.division === targetDivision
+              ) {
+                setTotalPrice(totalCost);
+                setTemp(totalCost);
+                return;
+              }
             }
-          }
-          if (
-            rank.rank === currentRank &&
-            service.division === currentDivision
-          ) {
-            foundCurrent = true;
-            if (currentRR === "26-50RR") {
-              totalCost -= service.price * 0.2;
-            } else if (currentRR === "51-75RR") {
-              totalCost -= service.price * 0.3;
-            } else if (currentRR === "76-100RR") {
-              totalCost -= service.price * 0.4;
+            if (
+              rank.rank === currentRank &&
+              service.division === currentDivision
+            ) {
+              foundCurrent = true;
+              if (currentRR === "26-50RR") {
+                totalCost -= service.price * 0.2;
+              } else if (currentRR === "51-75RR") {
+                totalCost -= service.price * 0.3;
+              } else if (currentRR === "76-100RR") {
+                totalCost -= service.price * 0.4;
+              }
             }
           }
         }
@@ -134,16 +153,22 @@ const ValorantEloBoost = () => {
     selectedTargetDivision,
     selectedTargetRank,
     currentRR,
+    extraWin,
+    priority,
+    liveStream,
+    soloBoost,
+    noStack,
   ]);
 
   const formattedPrice: number = parseFloat(totalPrice.toFixed(2));
   const trapPrice: number = parseFloat(
     (formattedPrice + formattedPrice * 0.1).toFixed(2)
   );
-  const discountedPrice: number = parseInt(
-    (trapPrice - trapPrice * 0.2).toFixed(0),
+  let discountedPrice: number = parseInt(
+    (trapPrice - trapPrice * 0.2).toFixed(2),
     10
   );
+  console.log(discountedPrice);
 
   useEffect(() => {
     if (selectedRank.rank === "Bronze") {
@@ -307,14 +332,15 @@ const ValorantEloBoost = () => {
         typeService: "Solo Boost",
         winMatch: 0,
         agentRequest: null,
-        priority: false,
-        stream: false,
-        offlineChat: true,
+        priority: priority,
+        stream: liveStream,
+        offlineChat: offlineChat,
+        type_order: "Rank Boost Order",
       };
       const { data, error } = await supabase.functions.invoke(
         "stripeCheckout",
         {
-          body: JSON.stringify({ totalPrice: discountedPrice }),
+          body: JSON.stringify(dataBody),
         }
       );
 
@@ -324,12 +350,13 @@ const ValorantEloBoost = () => {
         console.error("Error during checkout:", error);
       }
 
-      console.log(data);
       console.log(error);
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(discountedPrice + "FINAL");
 
   return (
     <div className="bg-backgroundSecondary  h-auto w-full ">
@@ -912,74 +939,125 @@ const ValorantEloBoost = () => {
             </div>
           </div>
           <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">Priority Order</h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                +20%
-              </h1>
-            </div>
+            <label htmlFor="priority">
+              <div className="flex items-center cursor-pointer">
+                <h1 className="mr-[5px]">Priority Order</h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  +20%
+                </h1>
+              </div>
+            </label>
             <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input
+                onClick={() => setPriority(!priority)}
+                id="priority"
+                type="checkbox"
+                defaultValue=""
+                className="sr-only peer"
+              />
+              <div
+                className={`relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-checked:bg-blue-600 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 `}
+              />
+            </label>
+          </div>
+          <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
+            <label htmlFor="live stream">
+              <div className="flex items-center cursor-pointer">
+                <h1 className="mr-[5px]">Live Stream</h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  +20%
+                </h1>
+              </div>
+            </label>
+            <label className="inline-flex items-center cursor-pointer ">
+              <input
+                onClick={() => setLiveStream(!liveStream)}
+                type="checkbox"
+                id="live stream"
+                defaultValue=""
+                className="sr-only peer"
+              />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
             </label>
           </div>
           <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">Live Stream</h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                +20%
-              </h1>
-            </div>
+            <label htmlFor="Solo Boost">
+              <div className="flex items-center  cursor-pointer">
+                <h1 className="mr-[5px]">Solo Only</h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  +40%
+                </h1>
+              </div>
+            </label>
             <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input
+                id="Solo Boost"
+                onClick={() => setSoloBoost(!soloBoost)}
+                type="checkbox"
+                defaultValue=""
+                className="sr-only peer"
+              />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
             </label>
           </div>
           <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">Solo Only</h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                +40%
-              </h1>
-            </div>
+            <label htmlFor="No 5 Stack">
+              <div className="flex items-center cursor-pointer">
+                <h1 className="mr-[5px]">No 5 Stack</h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  +25%
+                </h1>
+              </div>
+            </label>
             <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input
+                onClick={() => setNoStack(!noStack)}
+                id="No 5 Stack"
+                type="checkbox"
+                defaultValue=""
+                className="sr-only peer"
+              />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
             </label>
           </div>
           <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">No 5 Stack</h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                +25%
-              </h1>
-            </div>
+            <label htmlFor="Extra Win">
+              <div className="flex items-center cursor-pointer ">
+                <h1 className="mr-[5px]">Extra Win</h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  {`+1 WIN`}
+                </h1>
+              </div>
+            </label>
             <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input
+                onClick={() => setExtraWin(!extraWin)}
+                id="Extra Win"
+                type="checkbox"
+                defaultValue=""
+                className="sr-only peer"
+              />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
             </label>
           </div>
           <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">Extra Win</h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                +5$
-              </h1>
-            </div>
-            <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
+            <label htmlFor="Offline Chat">
+              <div className="flex items-center cursor-pointer ">
+                <h1 className="mr-[5px]">Offline Chat </h1>
+                <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
+                  FREE
+                </h1>
+              </div>
             </label>
-          </div>
-          <div className="text-white flex items-center justify-between pt-[20px] px-[10px]">
-            <div className="flex items-center ">
-              <h1 className="mr-[5px]">Offline Chat </h1>
-              <h1 className="px-[4px] py-[8px] text-[12px] bg-button rounded-xl bg-opacity-20 font-bold">
-                FREE
-              </h1>
-            </div>
             <label className="inline-flex items-center cursor-pointer ">
-              <input type="checkbox" defaultValue="" className="sr-only peer" />
+              <input
+                checked={offlineChat}
+                onClick={() => setOfflineChat(!offlineChat)}
+                type="checkbox"
+                id="Offline Chat"
+                defaultValue=""
+                className="sr-only peer"
+              />
               <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white   after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
             </label>
           </div>
@@ -993,7 +1071,7 @@ const ValorantEloBoost = () => {
             </div>
           </div>
           <h1 className="text-center my-[10px] text-button">
-            10% Discount Applied
+            20% Discount Applied
           </h1>
           <div className="px-[10px]">
             <button

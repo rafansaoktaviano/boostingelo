@@ -11,6 +11,7 @@ import { useAppDispatch } from "./redux/App/hooks";
 
 function App() {
   const dispatch = useAppDispatch();
+  const currentPath = window.location.pathname;
   const navigate = useNavigate();
   const getSession = async () => {
     const session = await supabase.auth.getSession();
@@ -22,6 +23,7 @@ function App() {
       dispatch(setIsLogin(false));
     }
   };
+
   useEffect(() => {
     getSession();
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -45,9 +47,9 @@ function App() {
   }, []);
   return (
     <>
-      <Nav />
+      {currentPath === "/dashboard" ? "" : <Nav />}
       <Routes>{routes.map((value) => value)}</Routes>
-      <Footer />
+      {currentPath === "/dashboard" ? "" : <Footer />}
     </>
   );
 }

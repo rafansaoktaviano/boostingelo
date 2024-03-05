@@ -11,6 +11,7 @@ import { store } from "./redux/App/store";
 import { Provider } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { NextUIProvider } from "@nextui-org/react";
 
 const publicKey = process.env.REACT_APP_PUBLIC_STRIPE_KEY || "";
 
@@ -19,27 +20,30 @@ const stripePromise = loadStripe(publicKey);
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
-    <Provider store={store}>
-      <BrowserRouter>
-        <Elements stripe={stripePromise}>
-          <App />
-        </Elements>
-      </BrowserRouter>
-    </Provider>
+    <NextUIProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Provider store={store}>
+        <BrowserRouter>
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
+        </BrowserRouter>
+      </Provider>
+    </NextUIProvider>
   </React.StrictMode>
 );
 

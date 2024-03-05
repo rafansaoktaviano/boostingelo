@@ -1,10 +1,6 @@
 {
-  "deno.enablePaths": [
-    "supabase/functions"
-  ],
-  "deno.lint": true,
-  "deno.unstable": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  "prettier.printWidth": 100,
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all"
 }

@@ -87,9 +87,11 @@ const Nav = () => {
             {isHovering && (
               <div className=" bg-background dropdown-menu text-white rounded-xl">
                 <ul>
-                  <li className="hover:bg-slate-700 rounded-xl cursor-pointer ">
-                    <a>Dashboard</a>
-                  </li>
+                  <Link to={"/dashboard"}>
+                    <li className="hover:bg-slate-700 rounded-xl cursor-pointer ">
+                      <a>Dashboard</a>
+                    </li>
+                  </Link>
                   <li
                     onClick={() => handleLogout()}
                     className="hover:bg-slate-700 rounded-xl cursor-pointer "
