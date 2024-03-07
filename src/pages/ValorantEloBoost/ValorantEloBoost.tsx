@@ -29,6 +29,8 @@ import {
 } from "../../utils/disableButtonRank";
 
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import axiosInstance from "../../config/api/api";
+import axios from "axios";
 
 interface Service {
   id: number;
@@ -168,7 +170,6 @@ const ValorantEloBoost = () => {
     (trapPrice - trapPrice * 0.2).toFixed(2),
     10
   );
-  console.log(discountedPrice);
 
   useEffect(() => {
     if (selectedRank.rank === "Bronze") {
@@ -336,27 +337,16 @@ const ValorantEloBoost = () => {
         stream: liveStream,
         offlineChat: offlineChat,
         type_order: "Rank Boost Order",
+        noStack: noStack,
       };
-      const { data, error } = await supabase.functions.invoke(
-        "stripeCheckout",
-        {
-          body: JSON.stringify(dataBody),
-        }
-      );
 
-      if (data) {
-        window.location.href = data.url;
-      } else if (error) {
-        console.error("Error during checkout:", error);
-      }
+      const res = await axiosInstance.post("/order/checkout", dataBody);
 
-      console.log(error);
+      window.location = res.data.data;
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(discountedPrice + "FINAL");
 
   return (
     <div className="bg-backgroundSecondary  h-auto w-full ">
@@ -642,6 +632,7 @@ const ValorantEloBoost = () => {
             </div>
           </div>
           {/* TARGET BANG */}
+
           <div className="w-[50%] h-full p-[30px]">
             <div className="flex gap-3  items-center ">
               <img
@@ -902,6 +893,24 @@ const ValorantEloBoost = () => {
               >
                 III
               </button>
+            </div>
+            <div className="flex flex-col mt-[20px]">
+              <label htmlFor="currentRR" className="text-highlight">
+                CHOOSE REGION :
+              </label>
+              <select
+                className="bg-button bg-opacity-10 mt-[20px] rounded-md w-[50%] text-secondary"
+                id="currentRR"
+                name="currentRR"
+                onChange={(e) => setCurrentRR(e.target.value)}
+              >
+                <option selected value="NA">
+                  NA
+                </option>
+                <option value="EU">EU</option>
+                <option value="OCE">OCE</option>
+                <option value="SEA">SEA</option>
+              </select>
             </div>
           </div>
         </div>

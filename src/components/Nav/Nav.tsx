@@ -9,26 +9,20 @@ import supabase from "../../config/supabase/supabase";
 import { useAppDispatch } from "../../redux/App/hooks";
 import { setIsLogin } from "../../redux/Features/auth";
 import { toastSuccess } from "../../utils/toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isSignUpModal, setIsSignUpModal] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const dispatch = useAppDispatch();
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isLogin = useAppSelector((state) => state.user.isLogin);
-  console.log(isLogin);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
-
-    dispatch(setIsLogin(false));
-
-    if (error === null) {
-      toastSuccess("Logout Success!");
-    }
   };
 
   return (

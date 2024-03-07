@@ -8,48 +8,32 @@ import Footer from "./components/Footer/Footer";
 import supabase from "./config/supabase/supabase";
 import { setIsLogin } from "./redux/Features/auth";
 import { useAppDispatch } from "./redux/App/hooks";
+import { toastError } from "./utils/toast";
 
 function App() {
   const dispatch = useAppDispatch();
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
-  const getSession = async () => {
-    const session = await supabase.auth.getSession();
-    console.log(session);
+  // const getSession = async () => {
+  //   const session = await supabase.auth.getSession();
+  //   console.log(session);
 
-    if (session.data.session) {
-      dispatch(setIsLogin(true));
-    } else {
-      dispatch(setIsLogin(false));
-    }
-  };
+  //   if (session.data.session) {
+  //     dispatch(setIsLogin(true));
+  //   } else {
+  //     dispatch(setIsLogin(false));
+  //   }
+  // };
 
-  useEffect(() => {
-    getSession();
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log(event);
-        console.log(session);
-        if (session) {
-          dispatch(setIsLogin(true));
-        } else {
-          dispatch(setIsLogin(false));
-        }
-
-        if (event === "SIGNED_OUT") {
-          dispatch(setIsLogin(false));
-          navigate("/");
-        }
-      }
-    );
-
-    return authListener.subscription.unsubscribe();
-  }, []);
   return (
     <>
-      {currentPath === "/dashboard" ? "" : <Nav />}
+      {currentPath === "/dashboard" || currentPath === "/order" ? "" : <Nav />}
       <Routes>{routes.map((value) => value)}</Routes>
-      {currentPath === "/dashboard" ? "" : <Footer />}
+      {currentPath === "/dashboard" || currentPath === "/order" ? (
+        ""
+      ) : (
+        <Footer />
+      )}
     </>
   );
 }

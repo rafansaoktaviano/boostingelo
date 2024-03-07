@@ -6,6 +6,7 @@ import ValorantWinBoost from "../pages/ValorantWinBoost/ValorantWinBoost";
 import ValorantPlacementBoost from "../pages/ValorantPlacementBoost/ValorantPlacementBoost";
 import DashboardCustomer from "../pages/DashboardCustomer/DashboardCustomer";
 import Dashboard from "../components/Dashboard/Dashboard";
+import OrdersCustomerPage from "../pages/OrdersCustomerPage/OrdersCustomerPage";
 
 const routes = [
   <Route path="/" element={<Home />} />,
@@ -21,6 +22,14 @@ const routes = [
     element={
       <DashboardCustomer>
         <Dashboard />
+      </DashboardCustomer>
+    }
+  />,
+  <Route
+    path="/order"
+    element={
+      <DashboardCustomer>
+        <OrdersCustomerPage />
       </DashboardCustomer>
     }
   />,

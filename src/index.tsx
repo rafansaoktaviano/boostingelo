@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { NextUIProvider } from "@nextui-org/react";
+import { AuthProvider } from "./pages/AuthProvider/AuthProvider";
 
 const publicKey = process.env.REACT_APP_PUBLIC_STRIPE_KEY || "";
 
@@ -39,7 +40,9 @@ root.render(
       <Provider store={store}>
         <BrowserRouter>
           <Elements stripe={stripePromise}>
-            <App />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
           </Elements>
         </BrowserRouter>
       </Provider>

@@ -1,20 +1,30 @@
 .container {
   background: rgba(92, 63, 63, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  box-shadow: 0 8px 32px 0 rgba(0, 158, 237, 0.10);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .table-cointainer {
   background: rgba(92, 63, 63, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  box-shadow: 0 8px 32px 0 rgba(0, 158, 237, 0.18);
+
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 .header-container {
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+
+@media (max-width: 1025px) {
+  .left {
+    width: 100%;
+  }
 }

@@ -5,21 +5,21 @@ import "./Dashboard.css";
 import { BsAirplaneFill } from "react-icons/bs";
 import { FaBookOpen } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
+import { Link } from "react-router-dom";
 import {
-  Spinner,
   Table,
   TableHeader,
   TableColumn,
   TableBody,
   TableRow,
   TableCell,
-  Chip,
-  Tooltip,
-  getKeyValue,
-  Skeleton,
 } from "@nextui-org/react";
 import supabase from "../../config/supabase/supabase";
 import { toastError } from "../../utils/toast";
+import valorantlogo from "./../../assets/valorantlogo.png";
+import dotalogo from "./../../assets/dota2logo.png";
+import lollogo from "./../../assets/lollogo.png";
+import tftlogo from "./../../assets/TFTlogo.png";
 
 interface RecentOrders {
   id: number;
@@ -97,7 +97,7 @@ const Dashboard = () => {
       const { data: sessionData, error: sessionError } =
         await supabase.auth.getSession();
 
-      if (sessionError) return toastError("Occured Error!");
+      if (sessionError) return toastError(sessionError.message);
 
       if (sessionData) {
         let type: string | null = null;
@@ -145,34 +145,60 @@ const Dashboard = () => {
 
       switch (columnKey) {
         case "game_id":
-          return (
-            <div className="w-full h-full  flex justify-center">
-              <div className="w-[50px] rounded-full h-[50px] bg-white">{}</div>
+          return cellValue === 1 ? (
+            <div className="w-full h-full  flex justify-start items-center">
+              <div className="w-[50px] rounded-full h-[50px] flex justify-center items-center bg-button/10">
+                <div className="w-[50px] scale-150 rounded-full h-[50px] flex justify-center items-center">
+                  <img src={lollogo} alt="" />
+                </div>
+              </div>
             </div>
+          ) : cellValue === 2 ? (
+            <div className="w-full h-full  flex justify-start items-center">
+              <div className="w-[50px] rounded-full h-[50px] flex justify-center items-center bg-button/10">
+                <div className="w-[50px] scale-120 rounded-full h-[50px] flex justify-center items-center">
+                  <img src={valorantlogo} alt="" />
+                </div>
+              </div>
+            </div>
+          ) : cellValue === 3 ? (
+            <div className="w-full h-full  flex justify-start items-center">
+              <div className="w-[50px] rounded-full h-[50px] flex justify-center items-center bg-button/10">
+                <div className="w-[50px] scale-150 rounded-full h-[50px] flex justify-center items-center">
+                  <img src={tftlogo} alt="" />
+                </div>
+              </div>
+            </div>
+          ) : cellValue === 2 ? (
+            <div className="w-full h-full  flex justify-start items-center">
+              <div className="w-[50px] rounded-full h-[50px] flex justify-center items-center bg-button/10">
+                <div className="w-[50px] scale-150 rounded-full h-[50px] flex justify-center items-center">
+                  <img src={valorantlogo} alt="" />
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
           );
         case "order_id":
           return (
-            <div className="flex justify-center">
+            <div className="flex justify-start">
               <p className="text-bold text-sm capitalize text-white">
                 {"#" + cellValue.toString().padStart(5, "0")}
               </p>
             </div>
           );
         case "orderDetails":
-          return <div className="text-white text-center">{cellValue}</div>;
+          return <div className="text-white ">{cellValue}</div>;
         case "booster":
           return (
-            <div className="text-white text-center">
-              {cellValue?.nickname || "--"}
-            </div>
+            <div className="text-white ">{cellValue?.nickname || "--"}</div>
           );
         case "price":
-          return (
-            <div className="text-white text-center">{`$${cellValue}`}</div>
-          );
+          return <div className="text-white ">{`$${cellValue}`}</div>;
         case "status":
           return (
-            <div className=" flex justify-center items-center">
+            <div className=" flex justify-start items-center">
               <div
                 className={`p-1 ${
                   cellValue === "Unpaid"
@@ -192,8 +218,8 @@ const Dashboard = () => {
           );
         case "actions":
           return recentOrders.status === "Unpaid" ? (
-            <div className="flex gap-2 justify-center items-center font-bold ">
-              <div className="w-[40%] flex justify-center items-center  ">
+            <div className="flex gap-2 justify-start items-center  font-bold ">
+              <div className=" flex justify-center items-center  ">
                 <button className=" text-[16px] px-3 hover:border-red-500 border-red-500/40  border rounded-2xl text-red-500/40 hover:text-red-500 transform duration-300">
                   Cancel
                 </button>
@@ -203,8 +229,8 @@ const Dashboard = () => {
               </div>
             </div>
           ) : (
-            <div className="flex justify-center items-center font-bold text-[16px] ">
-              <button className="w-[80%]  hover:bg-button text-button bg-button/20 transform duration-300 hover:text-white rounded-2xl">
+            <div className="flex justify-start items-center font-bold text-[16px] ">
+              <button className="w-[70%]  hover:bg-button text-button bg-button/20 transform duration-300 hover:text-white rounded-2xl">
                 Open
               </button>
             </div>
@@ -234,15 +260,15 @@ const Dashboard = () => {
           </div>
         </div>
         <div className=" w-full   ">
-          <div className="left w-[70%]  ">
-            <div className="grid grid-cols-3 gap-4 mb-[25px]">
+          <div className="left w-[100%]  ">
+            <div className="grid grid-cols-4 gap-4 mb-[25px]">
               <div
                 onClick={() => setTypeRecentOrders("Rank Boost Orders")}
                 className={`${
                   typeRecentOrders === "Rank Boost Orders"
                     ? "text-white transform duration-300 "
                     : ""
-                } container h-[200px] w-full text-secondary cursor-pointer bg-slate-600 rounded-xl flex justify-center items-center flex-col gap-4`}
+                } container h-[200px] w-full text-secondary cursor-pointer  bg-slate-600  flex justify-center items-center flex-col gap-4`}
               >
                 <BsAirplaneFill className="text-[54px] " />
                 <h1 className="font-bold">Rank Boost Orders</h1>
@@ -253,7 +279,7 @@ const Dashboard = () => {
                   typeRecentOrders === "Coaching Orders"
                     ? "text-white transform duration-300 "
                     : ""
-                }  container h-[200px] w-full text-secondary cursor-pointer bg-slate-600 rounded-xl flex justify-center items-center flex-col gap-4`}
+                }  container h-[200px] w-full text-secondary cursor-pointer bg-slate-600 rounded-full flex justify-center items-center flex-col gap-4`}
               >
                 <FaBookOpen className="text-[54px] " />
                 <h1 className="font-bold">Coaching Orders</h1>
@@ -272,20 +298,22 @@ const Dashboard = () => {
             </div>
             <div className=" w-full  h-full  mb-[10px] text-white font-bold flex justify-between items-center">
               <h1>Recent Orders</h1>
-              <button className="cursor-pointer px-4 py-1  text-secondary rounded-xl ">
-                See all
-              </button>
+              <Link to={"/order"}>
+                <button className="cursor-pointer px-4 py-1  text-secondary rounded-xl ">
+                  See all
+                </button>
+              </Link>
             </div>
             {isLoading === false ? (
-              <div className="h-[250px] w-full table-cointainer overflow-auto rounded-xl ">
+              <div className="h-full w-full table-cointainer overflow-auto rounded-xl ">
                 <Table
-                  aria-label="Example table with custom cells"
                   className="table-fixed"
+                  classNames={{ wrapper: "h-[275px] " }}
                 >
                   <TableHeader columns={columns}>
                     {(column) => (
                       <TableColumn
-                        className={`text-white border-secondary py-2 header-container  text-[16px] font-bold min-w-min  `}
+                        className={`text-white border-secondary py-2 header-container  text-[16px] font-bold   `}
                         key={column.uid}
                         align={column.uid === "actions" ? "center" : "start"}
                       >
@@ -311,7 +339,10 @@ const Dashboard = () => {
                 </Table>
               </div>
             ) : (
-              <div role="status " className="w-full h-[250px] flex justify-center items-center">
+              <div
+                role="status "
+                className="w-full h-[250px] flex justify-center items-center"
+              >
                 <svg
                   aria-hidden="true"
                   className="w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-button"
@@ -328,7 +359,6 @@ const Dashboard = () => {
                     fill="currentFill"
                   />
                 </svg>
-                <span className="sr-only">Loading...</span>
               </div>
             )}
           </div>

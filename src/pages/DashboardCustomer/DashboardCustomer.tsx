@@ -10,8 +10,10 @@ interface MyComponentProps {
 }
 
 const DashboardCustomer: React.FC<MyComponentProps> = ({ children }) => {
+  const currentPath = window.location.pathname;
+
   return (
-    <div className="h-screen bg-backgroundSecondary flex">
+    <div className="h-screen   bg-backgroundSecondary flex ">
       <div className="w-[200px] h-full  bg-backgroundSecondary  border-r-[2px] border-r-backgroundLow shadow-xl py-[50px] flex flex-col justify-between">
         <div>
           <Link to={"/"}>
@@ -24,14 +26,26 @@ const DashboardCustomer: React.FC<MyComponentProps> = ({ children }) => {
           </div>
         </div>
         <div className="mt-[-200px]">
-          <div className="py-4 px-[10px] hover:bg-slate-700 text-button w-full flex justify-start items-center gap-5  cursor-pointer">
-            <FaHome className="text-[18px]" />
-            <h1>Dashboard</h1>
-          </div>
-          <div className="py-4 px-[10px] hover:bg-slate-700 text-secondary w-full flex justify-start items-center gap-5  cursor-pointer">
-            <FaShoppingCart className="text-[18px]" />
-            <h1>Orders</h1>
-          </div>
+          <Link to={"/dashboard"}>
+            <div
+              className={` ${
+                currentPath === "/dashboard" ? "text-button" : "text-secondary"
+              } py-4 px-[10px] hover:bg-slate-700  w-full flex justify-start items-center gap-5  cursor-pointer`}
+            >
+              <FaHome className="text-[18px]" />
+              <h1>Dashboard</h1>
+            </div>
+          </Link>
+          <Link to={"/order"}>
+            <div
+              className={` ${
+                currentPath === "/order" ? "text-button" : "text-secondary"
+              } py-4 px-[10px] hover:bg-slate-700  w-full flex justify-start items-center gap-5  cursor-pointer`}
+            >
+              <FaShoppingCart className="text-[18px]" />
+              <h1>Orders</h1>
+            </div>
+          </Link>
           <div className="py-4 px-[10px] hover:bg-slate-700 text-secondary w-full flex justify-start items-center gap-5  cursor-pointer">
             <FaGear className="text-[18px]" />
             <h1>Profile Settings</h1>
