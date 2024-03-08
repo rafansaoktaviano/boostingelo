@@ -72,7 +72,7 @@ const ValorantEloBoost = () => {
   const [noStack, setNoStack] = useState<boolean>(false);
   const [extraWin, setExtraWin] = useState<boolean>(false);
   const [offlineChat, setOfflineChat] = useState<boolean>(true);
-  const [temp, setTemp] = useState(0);
+  const [region, setRegion] = useState<string>("");
 
   useEffect(() => {
     const rankList = async () => {
@@ -121,7 +121,7 @@ const ValorantEloBoost = () => {
                 service.division === targetDivision
               ) {
                 setTotalPrice(totalCost);
-                setTemp(totalCost);
+
                 return;
               }
             }
@@ -331,13 +331,14 @@ const ValorantEloBoost = () => {
         targetDivision: selectedTargetDivision,
         currentRR: currentRR,
         typeService: "Solo Boost",
-        winMatch: 0,
+        winMatch: extraWin === true ? 1 : 0,
         agentRequest: null,
         priority: priority,
         stream: liveStream,
         offlineChat: offlineChat,
         type_order: "Rank Boost Order",
         noStack: noStack,
+        region: region,
       };
 
       const res = await axiosInstance.post("/order/checkout", dataBody);
@@ -902,7 +903,7 @@ const ValorantEloBoost = () => {
                 className="bg-button bg-opacity-10 mt-[20px] rounded-md w-[50%] text-secondary"
                 id="currentRR"
                 name="currentRR"
-                onChange={(e) => setCurrentRR(e.target.value)}
+                onChange={(e) => setRegion(e.target.value)}
               >
                 <option selected value="NA">
                   NA

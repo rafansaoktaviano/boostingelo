@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
+
 import {
   Table,
   TableHeader,
@@ -10,19 +10,36 @@ import {
   TableCell,
   Pagination,
 } from "@nextui-org/react";
-import supabase from "../../config/supabase/supabase";
+import { CiStreamOn } from "react-icons/ci";
+import { IoChatbox } from "react-icons/io5";
+import { LuRefreshCcw } from "react-icons/lu";
+import { BsPersonFill } from "react-icons/bs";
+import { IoMdPeople } from "react-icons/io";
+import { FaRocket } from "react-icons/fa";
+import { MdError } from "react-icons/md";
+import { FaPlus } from "react-icons/fa6";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+} from "@nextui-org/react";
+
 import { toastError } from "../../utils/toast";
+
+import supabase from "../../config/supabase/supabase";
 import valorantlogo from "./../../assets/valorantlogo.png";
 import dotalogo from "./../../assets/dota2logo.png";
 import lollogo from "./../../assets/lollogo.png";
 import tftlogo from "./../../assets/TFTlogo.png";
-import { LuRefreshCcw } from "react-icons/lu";
+import PopOver from "../../components/PopOver/PopOver";
 
 const columns = [
   { name: "Game", uid: "game_id" },
   { name: "ID", uid: "order_id" },
   { name: "Rank", uid: "orders_details" },
   { name: "Details", uid: "details" },
+  { name: "Region", uid: "region" },
   { name: "Booster", uid: "booster" },
   { name: "Price", uid: "price" },
   { name: "Status", uid: "status" },
@@ -42,6 +59,8 @@ interface OrdersType {
   price: number;
   booster: object;
   orders_details: OrderDetails[];
+  type_order: string;
+  region: string;
 }
 
 interface OrderDetails {
@@ -84,7 +103,7 @@ const OrdersCustomerPage = () => {
         const { data, error } = await supabase
           .from("orders")
           .select(
-            "id, status, game_id, order_id, price, created_at, orders_details(start_rank ,start_division,end_rank,end_division,type_service, priority,stream ,rank_rating, no_stack, offline_chat, rank_rating, win_match), booster:users_details!booster(nickname)"
+            "id, status, game_id, region ,order_id, price, created_at, type_order, orders_details(start_rank ,start_division,end_rank,end_division,type_service, priority,stream ,rank_rating, no_stack, offline_chat, rank_rating, win_match), booster:users_details!booster(nickname)"
           )
           .eq("customer", sessionData.session?.user.id)
           .order("created_at", { ascending: false });
@@ -111,12 +130,8 @@ const OrdersCustomerPage = () => {
 
   const refresh = async () => {
     try {
-      setIsRefreshing(true);
       await fetch();
-    } catch (error) {
-    } finally {
-      setIsRefreshing(false);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -183,6 +198,14 @@ const OrdersCustomerPage = () => {
               </p>
             </div>
           );
+        case "region":
+          return (
+            <div className="flex justify-start">
+              <p className="text-bold text-sm capitalize text-white">
+                {cellValue}
+              </p>
+            </div>
+          );
         case "orders_details":
           return (
             <div className="flex justify-start">
@@ -201,7 +224,9 @@ const OrdersCustomerPage = () => {
                         : value.rank_rating === 76
                         ? "76-100RR"
                         : ""
-                    } - ${value.end_rank} ${value.end_division} `}</div>
+                    } - ${value.end_rank} ${value.end_division} | ${
+                      orders.type_order
+                    } `}</div>
                   );
                 })}
               </p>
@@ -216,39 +241,50 @@ const OrdersCustomerPage = () => {
                     return (
                       <>
                         <div className="flex gap-2 justify-center items-center text-[12px] ">
+                          {value.priority === true ? (
+                            <PopOver text="Duo Boost" style="bg-button">
+                              <FaRocket className="text-[32px] text-button  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
                           {value.stream === true ? (
-                            <div className="bg-button/50 text-white rounded-md px-2 ">
-                              Stream
-                            </div>
+                            <PopOver text="Stream" style="bg-purple-500">
+                              <CiStreamOn className="text-[32px] text-purple-400 font-bold" />
+                            </PopOver>
                           ) : (
                             ""
                           )}
                           {value.offline_chat === true ? (
-                            <div className="bg-button/50 text-white rounded-md px-2">
-                              Offline
-                            </div>
+                            <PopOver text="Offline Chat" style="bg-slate-700">
+                              <IoChatbox className="text-[32px] text-slate-500  font-bold" />
+                            </PopOver>
                           ) : (
                             ""
                           )}
-
-                          <div className="bg-button/50 text-white rounded-md px-2">
-                            {value.type_service}
-                          </div>
-
-                          {value.priority === true ? (
-                            <div className="bg-button/50 text-white rounded-md px-2">
-                              Priority
-                            </div>
+                          {value.type_service === "Solo Boost" ? (
+                            <PopOver text="Solo Boost" style="bg-highlight">
+                              <BsPersonFill className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
+                          ) : value.type_service === "Duo Boost" ? (
+                            <PopOver text="Duo Boost" style="bg-highlight">
+                              <IoMdPeople className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
                           ) : (
                             ""
                           )}
                           {value.win_match > 0 ? (
-                            <div className="bg-button/50 text-white rounded-md px-2">{`${value.win_match} WIN`}</div>
+                            <PopOver text={`+ ${value.win_match} WIN`} style="bg-yellow-600">
+                              <FaPlus className="text-[32px] text-yellow-600  font-bold" />
+                            </PopOver>
                           ) : (
                             ""
                           )}
+
                           {value.no_stack === true ? (
-                            <div className="bg-button/50 text-white rounded-md px-2">{`NO 5 STACK`}</div>
+                            <PopOver text="No 5 Stack" style="bg-red-500">
+                              <MdError className="text-[32px] text-red-500  font-bold" />
+                            </PopOver>
                           ) : (
                             ""
                           )}
@@ -299,7 +335,7 @@ const OrdersCustomerPage = () => {
                   Cancel
                 </button>
               </div>
-              <div className="hover:bg-red-500 px-3  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl w-[40%] flex justify-start items-center  ">
+              <div className="hover:bg-red-500 px-3  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl w-[40%] flex justify-center items-center  ">
                 <button className="">Pay</button>
               </div>
             </div>
