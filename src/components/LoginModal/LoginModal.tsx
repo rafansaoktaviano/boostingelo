@@ -32,6 +32,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
     let { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
+    if (error) return console.log("Error!");
   };
 
   const onSubmitLogin = async (event: React.FormEvent) => {

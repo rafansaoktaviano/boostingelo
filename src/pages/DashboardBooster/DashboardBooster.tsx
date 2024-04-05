@@ -13,11 +13,7 @@ interface MyComponentProps {
   children: ReactNode;
 }
 
-type Avatar = {
-  avatar: string;
-};
-
-const DashboardCustomer: React.FC<MyComponentProps> = ({ children }) => {
+const DashboardBooster: React.FC<MyComponentProps> = ({ children }) => {
   const currentPath = window.location.pathname;
 
   const socket = useContext(SocketContext);
@@ -81,4 +77,4 @@ const DashboardCustomer: React.FC<MyComponentProps> = ({ children }) => {
   );
 };
 
-export default DashboardCustomer;
+export default DashboardBooster;

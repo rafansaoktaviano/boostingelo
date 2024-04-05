@@ -18,12 +18,6 @@ import { IoMdPeople } from "react-icons/io";
 import { FaRocket } from "react-icons/fa";
 import { MdError } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-} from "@nextui-org/react";
 
 import { toastError } from "../../utils/toast";
 
@@ -33,6 +27,7 @@ import dotalogo from "./../../assets/dota2logo.png";
 import lollogo from "./../../assets/lollogo.png";
 import tftlogo from "./../../assets/TFTlogo.png";
 import PopOver from "../../components/PopOver/PopOver";
+import { Link } from "react-router-dom";
 
 const columns = [
   { name: "Game", uid: "game_id" },
@@ -87,7 +82,7 @@ enum Status {
 const OrdersCustomerPage = () => {
   const [orders, setOrders] = useState<OrdersType[]>([]);
   const [page, setPage] = React.useState(1);
-  const rowsPerPage = 8;
+  const rowsPerPage = 7;
   const pages = Math.ceil(orders.length / rowsPerPage);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
@@ -140,8 +135,6 @@ const OrdersCustomerPage = () => {
     }
   }, [isRefreshing]);
 
-  console.log(isRefreshing);
-
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
@@ -179,11 +172,11 @@ const OrdersCustomerPage = () => {
                 </div>
               </div>
             </div>
-          ) : cellValue === 2 ? (
+          ) : cellValue === 4 ? (
             <div className="w-full h-full  flex justify-start items-center">
               <div className="w-[50px] rounded-full h-[50px] flex justify-center items-center bg-button/10">
                 <div className="w-[50px] scale-150 rounded-full h-[50px] flex justify-center items-center">
-                  <img src={valorantlogo} alt="" />
+                  <img src={dotalogo} alt="" />
                 </div>
               </div>
             </div>
@@ -274,7 +267,10 @@ const OrdersCustomerPage = () => {
                             ""
                           )}
                           {value.win_match > 0 ? (
-                            <PopOver text={`+ ${value.win_match} WIN`} style="bg-yellow-600">
+                            <PopOver
+                              text={`+ ${value.win_match} WIN`}
+                              style="bg-yellow-600"
+                            >
                               <FaPlus className="text-[32px] text-yellow-600  font-bold" />
                             </PopOver>
                           ) : (
@@ -330,21 +326,23 @@ const OrdersCustomerPage = () => {
         case "actions":
           return orders.status === "Unpaid" ? (
             <div className="flex gap-2 justify-start items-center font-bold ">
-              <div className=" flex justify-center items-center  ">
+              {/* <div className=" flex justify-center items-center  ">
                 <button className=" text-[16px] px-3 hover:border-red-500 border-red-500/40  border rounded-2xl text-red-500/40 hover:text-red-500 transform duration-300">
                   Cancel
                 </button>
-              </div>
-              <div className="hover:bg-red-500 px-3  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl w-[40%] flex justify-center items-center  ">
+              </div> */}
+              <div className="hover:bg-red-500 px-3  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl w-[70%] flex justify-center items-center  ">
                 <button className="">Pay</button>
               </div>
             </div>
           ) : (
-            <div className="flex justify-start items-center font-bold text-[16px] ">
-              <button className="w-[80%]  hover:bg-button text-button bg-button/20 transform duration-300 hover:text-white rounded-2xl">
-                Open
-              </button>
-            </div>
+            <Link to={`/order/${orders.order_id.toString().padStart(5, "0")}`}>
+              <div className="flex justify-start items-center font-bold text-[16px] ">
+                <button className="w-[70%]  hover:bg-button text-button bg-button/20 transform duration-300 hover:text-white rounded-2xl">
+                  Open
+                </button>
+              </div>
+            </Link>
           );
         default:
           return cellValue;
@@ -354,7 +352,7 @@ const OrdersCustomerPage = () => {
   );
   return (
     <div className="w-full  h-full  ">
-      <div className="h-full flex flex-col ">
+      <div className="h-full flex flex-col overflow-auto">
         <div className="text-white flex w-full items-center  justify-between mb-[50px]">
           <div>
             <h1 className="font-bold text-[24px]">ORDERS</h1>
@@ -380,11 +378,11 @@ const OrdersCustomerPage = () => {
           </button>
         </div>
         {isRefreshing === false ? (
-          <div className="h-full w-full table-cointainer overflow-auto rounded-xl ">
+          <div className="h-full w-full table-cointainer pb-[50px] rounded-xl ">
             <Table
               className=" "
               bottomContentPlacement="outside"
-              classNames={{ wrapper: "h-[650px] p-0" }}
+              classNames={{ wrapper: "h-full p-0" }}
               bottomContent={
                 <div className="flex flex-wrap gap-4 items-center justify-center ">
                   <Pagination

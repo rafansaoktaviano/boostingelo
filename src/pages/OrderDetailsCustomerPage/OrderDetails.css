@@ -1,0 +1,9 @@
+.table-container {
+  /* background: rgba(92, 63, 63, 0.25); */
+  background: #151921;
+  box-shadow: 0 8px 32px 0 rgba(0, 158, 237, 0.18);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}

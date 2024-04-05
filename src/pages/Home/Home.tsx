@@ -23,6 +23,7 @@ import { FaApplePay } from "react-icons/fa";
 import { FaCcMastercard } from "react-icons/fa6";
 import { FaGooglePay } from "react-icons/fa6";
 import { FaCcStripe } from "react-icons/fa";
+import supabase from "../../config/supabase/supabase";
 
 const Home = () => {
   return (

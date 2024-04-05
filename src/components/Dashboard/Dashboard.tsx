@@ -74,6 +74,9 @@ const Dashboard = () => {
   console.log(flattenedData);
 
   const currentDate = new Date();
+
+  
+
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
@@ -219,12 +222,12 @@ const Dashboard = () => {
         case "actions":
           return recentOrders.status === "Unpaid" ? (
             <div className="flex gap-2 justify-start items-center  font-bold ">
-              <div className=" flex justify-center items-center  ">
+              {/* <div className=" flex justify-center items-center  ">
                 <button className=" text-[16px] px-3 hover:border-red-500 border-red-500/40  border rounded-2xl text-red-500/40 hover:text-red-500 transform duration-300">
                   Cancel
                 </button>
-              </div>
-              <div className="hover:bg-red-500 px-3  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl w-[40%] flex justify-center items-center  ">
+              </div> */}
+              <div className="hover:bg-red-500 px-3 w-[70%]  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl  flex justify-center items-center  ">
                 <button className="">Pay</button>
               </div>
             </div>

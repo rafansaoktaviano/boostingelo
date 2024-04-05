@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Routes, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  useMatch,
+  useNavigate,
+  useResolvedPath,
+} from "react-router-dom";
 import routes from "./routes/routes";
 import Nav from "./components/Nav/Nav";
 import Footer from "./components/Footer/Footer";
@@ -14,22 +19,23 @@ function App() {
   const dispatch = useAppDispatch();
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
-  // const getSession = async () => {
-  //   const session = await supabase.auth.getSession();
-  //   console.log(session);
-
-  //   if (session.data.session) {
-  //     dispatch(setIsLogin(true));
-  //   } else {
-  //     dispatch(setIsLogin(false));
-  //   }
-  // };
+  const urlParam = useMatch("/order/:id")?.pathname;
 
   return (
     <>
-      {currentPath === "/dashboard" || currentPath === "/order" ? "" : <Nav />}
+      {currentPath === "/dashboard" ||
+      currentPath === "/order" ||
+      currentPath === "/booster/orders" ||
+      currentPath === urlParam ? (
+        ""
+      ) : (
+        <Nav />
+      )}
       <Routes>{routes.map((value) => value)}</Routes>
-      {currentPath === "/dashboard" || currentPath === "/order" ? (
+      {currentPath === "/dashboard" ||
+      currentPath === "/order" ||
+      currentPath === "/booster/orders" ||
+      currentPath === urlParam ? (
         ""
       ) : (
         <Footer />

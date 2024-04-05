@@ -4,19 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { store } from "./redux/App/store";
 import { Provider } from "react-redux";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+
 import { NextUIProvider } from "@nextui-org/react";
 import { AuthProvider } from "./pages/AuthProvider/AuthProvider";
-
-const publicKey = process.env.REACT_APP_PUBLIC_STRIPE_KEY || "";
-
-const stripePromise = loadStripe(publicKey);
+import { SocketContext, socket } from "./context/socket";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -39,18 +35,15 @@ root.render(
       />
       <Provider store={store}>
         <BrowserRouter>
-          <Elements stripe={stripePromise}>
+          <SocketContext.Provider value={socket}>
             <AuthProvider>
               <App />
             </AuthProvider>
-          </Elements>
+          </SocketContext.Provider>
         </BrowserRouter>
       </Provider>
     </NextUIProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

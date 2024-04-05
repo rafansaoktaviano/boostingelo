@@ -28,7 +28,6 @@ import {
   disabledButtonSilver,
 } from "../../utils/disableButtonRank";
 
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axiosInstance from "../../config/api/api";
 import axios from "axios";
 
@@ -72,7 +71,7 @@ const ValorantEloBoost = () => {
   const [noStack, setNoStack] = useState<boolean>(false);
   const [extraWin, setExtraWin] = useState<boolean>(false);
   const [offlineChat, setOfflineChat] = useState<boolean>(true);
-  const [region, setRegion] = useState<string>("");
+  const [region, setRegion] = useState<string>("NA");
 
   useEffect(() => {
     const rankList = async () => {

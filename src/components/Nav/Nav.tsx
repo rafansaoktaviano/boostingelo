@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./nav.css";
 import LoginModal from "../LoginModal/LoginModal";
 import SignUpModal from "../SignUpModal/SignUpModal";
@@ -10,12 +10,14 @@ import { useAppDispatch } from "../../redux/App/hooks";
 import { setIsLogin } from "../../redux/Features/auth";
 import { toastSuccess } from "../../utils/toast";
 import { Link, useNavigate } from "react-router-dom";
+import { SocketContext } from "../../context/socket";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
   const [isSignUpModal, setIsSignUpModal] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const socket = useContext(SocketContext);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

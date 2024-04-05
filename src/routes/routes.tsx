@@ -7,6 +7,9 @@ import ValorantPlacementBoost from "../pages/ValorantPlacementBoost/ValorantPlac
 import DashboardCustomer from "../pages/DashboardCustomer/DashboardCustomer";
 import Dashboard from "../components/Dashboard/Dashboard";
 import OrdersCustomerPage from "../pages/OrdersCustomerPage/OrdersCustomerPage";
+import OrderDetailsCustomerPage from "../pages/OrderDetailsCustomerPage/OrderDetailsCustomerPage";
+import DashboardBooster from "../pages/DashboardBooster/DashboardBooster";
+import OrderBoosterPage from "../pages/OrderBoosterPage/OrderBoosterPage";
 
 const routes = [
   <Route path="/" element={<Home />} />,
@@ -31,6 +34,22 @@ const routes = [
       <DashboardCustomer>
         <OrdersCustomerPage />
       </DashboardCustomer>
+    }
+  />,
+  <Route
+    path="/order/:id"
+    element={
+      <DashboardCustomer>
+        <OrderDetailsCustomerPage />
+      </DashboardCustomer>
+    }
+  />,
+  <Route
+    path="/booster/orders"
+    element={
+      <DashboardBooster>
+        <OrderBoosterPage />
+      </DashboardBooster>
     }
   />,
 ];
