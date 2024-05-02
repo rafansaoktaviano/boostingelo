@@ -11,7 +11,7 @@ import { toastError } from "../../utils/toast";
 import ImageRank from "../../components/ImageRank/ImageRank";
 import { RankType } from "../../components/ImageRank/ImageRank";
 import Cookies from "js-cookie";
-import { SocketContext } from "../../context/socket";
+// import { SocketContext } from "../../context/socket";
 import AccountDetails from "../../components/AccountDetails/AccountDetails";
 import Agents from "../../components/Agents/Agents";
 import PopOver from "../../components/PopOver/PopOver";
@@ -37,12 +37,6 @@ export interface Orders {
   games: any;
   orders_details: OrdersDetail[];
 }
-
-export type Game = {
-  name: string;
-  created_at: string;
-  id: number;
-};
 
 export interface OrdersDetail {
   stream: boolean;
@@ -90,7 +84,7 @@ const OrderDetailsCustomerPage = () => {
   const [session, setSession] = useState<SupabaseSession | null>(null);
   const [messageData, setMessageData] = useState<message[] | null>([]);
   const [tabs, setTabs] = useState(1);
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
   const fetchMessages = async () => {
     try {
@@ -160,7 +154,7 @@ const OrderDetailsCustomerPage = () => {
     fetch();
     fetchMessages();
 
-    socket.emit("join", parseInt(id as string));
+    // socket.emit("join", parseInt(id as string));
     // socket.on("message sent", (msg) => {
     //   // fetchMessages();
     // });
@@ -199,7 +193,14 @@ const OrderDetailsCustomerPage = () => {
 
   return (
     <div className=" w-full h-full">
-      <div className="text-white  text-[24px] font-bold mb-[20px]">{`Order #${id}`}</div>
+      <div className="flex justify-between items-center">
+        <h1 className="text-white  text-[24px] font-bold mb-[20px]">
+          {`Order #${id}`}
+        </h1>
+        <h1 className="text-white  text-[24px] font-bold mb-[20px]">
+          {data?.status || ""}
+        </h1>
+      </div>
       <div className="flex w-full  gap-4 ">
         <div className="left w-[60%] ">
           <div className="table-container h-auto py-[20px] px-[80px]">
@@ -275,60 +276,61 @@ const OrderDetailsCustomerPage = () => {
               style={{ scrollBehavior: "smooth" }}
               className=" w-full h-[400px] py-[20px]  overflow-auto"
             >
-              {messageData?.map((value, index) => {
-                const dateTime: Date = new Date(value.created_at);
-                const options: Intl.DateTimeFormatOptions = {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                  timeZone: "UTC",
-                };
+              {messageData &&
+                messageData?.map((value, index) => {
+                  const dateTime: Date = new Date(value.created_at);
+                  const options: Intl.DateTimeFormatOptions = {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "UTC",
+                  };
 
-                const formattedDateTime = dateTime.toLocaleString(
-                  "en-US",
-                  options
-                );
+                  const formattedDateTime = dateTime.toLocaleString(
+                    "en-US",
+                    options
+                  );
 
-                return (
-                  <div className="my-[10px]">
-                    {value.user_id === session?.user.id ? (
-                      <>
-                        <div className=" flex justify-end ">
-                          <p className="text-white text-[12px]">
-                            {`(${value.users_details.role}) ${value.users_details.nickname}`}
-                          </p>
-                        </div>
-                        <div className=" flex justify-end ">
-                          <button className="p-2  h-auto w-auto rounded-md text-white bg-secondary">
-                            {value.message}
-                          </button>
-                        </div>
-                        <div className=" flex justify-end ">
-                          <p className=" text-[10px] text-white ">
-                            {`${formattedDateTime}`}
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className=" flex justify-start ">
-                          <p className="text-white text-[12px]">
-                            {value.message}
-                          </p>
-                        </div>
-                        <div className=" flex justify-start ">
-                          <button className="p-2   h-auto w-auto rounded-md text-white bg-secondary">
-                            {value.message}
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
+                  return (
+                    <div className="my-[10px]">
+                      {value.user_id === session?.user.id ? (
+                        <>
+                          <div className=" flex justify-end ">
+                            <p className="text-white text-[12px]">
+                              {`(${value.users_details.role}) ${value.users_details.nickname}`}
+                            </p>
+                          </div>
+                          <div className=" flex justify-end ">
+                            <button className="p-2  h-auto w-auto rounded-md text-white bg-secondary">
+                              {value.message}
+                            </button>
+                          </div>
+                          <div className=" flex justify-end ">
+                            <p className=" text-[10px] text-white ">
+                              {`${formattedDateTime}`}
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className=" flex justify-start ">
+                            <p className="text-white text-[12px]">
+                              {value.message}
+                            </p>
+                          </div>
+                          <div className=" flex justify-start ">
+                            <button className="p-2   h-auto w-auto rounded-md text-white bg-secondary">
+                              {value.message}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
             <form
               onSubmit={onMessageSubmit}
@@ -399,7 +401,7 @@ const OrderDetailsCustomerPage = () => {
                 <h1 className="font-bold">Ravs</h1>
               </div>
               <div className="text-center text-white text-[12px] mt-[30px]">
-                <h1>DETAILS</h1>
+                <h1>OPTIONS</h1>
                 <div className="flex justify-center items-center gap-2 my-[20px]">
                   {data?.orders_details.map((value, index) => {
                     return (

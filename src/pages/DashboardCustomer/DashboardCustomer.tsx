@@ -7,7 +7,7 @@ import { FaGear } from "react-icons/fa6";
 import supabase from "../../config/supabase/supabase";
 
 import Cookies from "js-cookie";
-import { SocketContext } from "../../context/socket";
+// import { SocketContext } from "../../context/socket";
 
 interface MyComponentProps {
   children: ReactNode;
@@ -20,19 +20,19 @@ type Avatar = {
 const DashboardCustomer: React.FC<MyComponentProps> = ({ children }) => {
   const currentPath = window.location.pathname;
 
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
-  useEffect(() => {
-    socket.connect();
-    socket.on("session", ({ sessionID }) => {
-      socket.auth = { sessionID };
-      Cookies.set("session", sessionID);
-    });
+  // useEffect(() => {
+  //   // socket.connect();
+  //   socket.on("session", ({ sessionID }) => {
+  //     socket.auth = { sessionID };
+  //     Cookies.set("session", sessionID);
+  //   });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className="h-screen   bg-backgroundSecondary flex ">

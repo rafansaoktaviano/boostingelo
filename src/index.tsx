@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 
 import { NextUIProvider } from "@nextui-org/react";
 import { AuthProvider } from "./pages/AuthProvider/AuthProvider";
-import { SocketContext, socket } from "./context/socket";
+// import { SocketContext, socket } from "./context/socket";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -35,11 +35,11 @@ root.render(
       />
       <Provider store={store}>
         <BrowserRouter>
-          <SocketContext.Provider value={socket}>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </SocketContext.Provider>
+          {/* <SocketContext.Provider value={socket}> */}
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+          {/* </SocketContext.Provider> */}
         </BrowserRouter>
       </Provider>
     </NextUIProvider>

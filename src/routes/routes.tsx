@@ -10,6 +10,7 @@ import OrdersCustomerPage from "../pages/OrdersCustomerPage/OrdersCustomerPage";
 import OrderDetailsCustomerPage from "../pages/OrderDetailsCustomerPage/OrderDetailsCustomerPage";
 import DashboardBooster from "../pages/DashboardBooster/DashboardBooster";
 import OrderBoosterPage from "../pages/OrderBoosterPage/OrderBoosterPage";
+import OrderDetailsBoosterPage from "../pages/OrderDetailsBoosterPage/OrderDetailsBoosterPage";
 
 const routes = [
   <Route path="/" element={<Home />} />,
@@ -49,6 +50,14 @@ const routes = [
     element={
       <DashboardBooster>
         <OrderBoosterPage />
+      </DashboardBooster>
+    }
+  />,
+  <Route
+    path="/booster/orders/:id"
+    element={
+      <DashboardBooster>
+        <OrderDetailsBoosterPage />
       </DashboardBooster>
     }
   />,

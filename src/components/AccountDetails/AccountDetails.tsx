@@ -100,9 +100,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
         value={region}
         onChange={(e) => setRegion(e.target.value)}
       >
-        <option selected value="NA">
-          NA
-        </option>
+        <option value="NA">NA</option>
         <option value="EU">EU</option>
         <option value="OCE">OCE</option>
         <option value="SEA">SEA</option>

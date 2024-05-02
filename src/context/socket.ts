@@ -1,13 +1,18 @@
-import Cookies from "js-cookie";
-import React, { createContext } from "react";
-import {connect} from "socket.io-client";
+// import Cookies from "js-cookie";
+// import React, { createContext } from "react";
+// import {connect} from "socket.io-client";
 
-export const socket = connect("http://localhost:5000", {
-  auth: {
-    token: Cookies.get("token"),
-    sessionId: Cookies.get("session"),
-  },
-});
+// export const socket = connect("http://localhost:5000", {
+//   auth: {
+//     token: Cookies.get("token"),
+//     sessionId: Cookies.get("session"),
+//   },
+// });
 
-export const SocketContext = createContext(socket);
- 
+// export const SocketContext = createContext(socket);
+
+import React from "react";
+
+const socket = () => {};
+
+export default socket;

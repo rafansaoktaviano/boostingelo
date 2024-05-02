@@ -28,6 +28,7 @@ import valorantlogo from "./../../assets/valorantlogo.png";
 import dotalogo from "./../../assets/dota2logo.png";
 import lollogo from "./../../assets/lollogo.png";
 import tftlogo from "./../../assets/TFTlogo.png";
+import Swal from "sweetalert2";
 
 type SupabaseSession = import("@supabase/supabase-js").Session | null;
 
@@ -70,55 +71,91 @@ const columns = [
 
 const OrderBoosterPage = () => {
   const [data, setData] = useState<Orders[]>([]);
-  const [sessionData, setSessionData] = useState<SupabaseSession | null>(null);
+
   const fetch = async () => {
-    const { data: session, error: errorSession } =
-      await supabase.auth.getSession();
-    setSessionData(session.session);
+    try {
+      const session = await supabase.auth.getSession();
+      let { data: users_details, error: errorUserDetails } = await supabase
+        .from("users_details")
+        .select("*")
+        .eq("id", session.data.session?.user.id)
+        .single();
 
-    let { data: users_details, error: errorUserDetails } = await supabase
-      .from("users_details")
-      .select("*")
-      .eq("id", session.session?.user.id)
-      .single();
+      if (errorUserDetails) return toastError("Error!");
 
-    console.log(users_details);
+      const boosterGame =
+        users_details.role == "Booster Valorant"
+          ? 2
+          : users_details.role == "Booster League of Legends"
+          ? 1
+          : users_details.role == "Booster Dota 2"
+          ? 4
+          : users_details.role == "Booster Teamfight Tactics"
+          ? 3
+          : null;
 
-    if (errorUserDetails) return toastError("Error!");
+      const { data, error } = await supabase
+        .from("orders")
+        .select(
+          "id, status, booster , game_id, region ,order_id, price, created_at, type_order, orders_details(start_rank ,start_division,end_rank,end_division,type_service, priority,stream ,rank_rating, no_stack, offline_chat, rank_rating, win_match)"
+        )
+        .or(`booster.is.null, booster.eq.${session.data.session?.user.id}`)
+        .or(
+          `status.eq.${"Waiting For Booster"}, status.eq.${"Order In Proggress"}`
+        )
+        .or(`game_id.eq.${boosterGame}`)
+        .order("created_at", { ascending: false });
 
-    const boosterGame =
-      users_details.role == "Booster Valorant"
-        ? 2
-        : users_details.role == "Booster League of Legends"
-        ? 1
-        : users_details.role == "Booster Dota 2"
-        ? 4
-        : users_details.role == "Booster Teamfight Tactics"
-        ? 3
-        : null;
+      if (error) return toastError("Error!");
 
-    const { data, error } = await supabase
-      .from("orders")
-      .select(
-        "id, status, booster , game_id, region ,order_id, price, created_at, type_order, orders_details(start_rank ,start_division,end_rank,end_division,type_service, priority,stream ,rank_rating, no_stack, offline_chat, rank_rating, win_match)"
-      )
-      .or(`booster.is.null, booster.eq.${session.session?.user.id}`)
-      .or(
-        `status.eq.${"Waiting For Booster"}, status.eq.${"Order In Proggress"}`
-      )
-      .or(`game_id.eq.${boosterGame}`)
-      .order("created_at", { ascending: false });
-    console.log(data);
-    console.log(error);
-
-    if (error) return toastError("Error!");
-
-    setData(data);
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetch();
   }, []);
+
+  const handleClaim = async (order_id: string) => {
+    console.log(order_id);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Order ID : ${"#" + order_id.toString().padStart(5, "0")}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Claim it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const session = await supabase.auth.getSession();
+          console.log(session.data.session?.user.id);
+
+          const { data, error } = await supabase
+            .from("orders")
+            .update({
+              booster: session.data.session?.user.id,
+              status: "Order In Proggress",
+            })
+            .eq("order_id", order_id)
+            .select();
+
+          Swal.fire({
+            title: "Claimed!",
+            text: "Your order has been claimed.",
+            icon: "success",
+          });
+          fetch();
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
 
   const filteredBooster = data.filter((value) => {
     return value.booster !== null;
@@ -278,20 +315,31 @@ const OrderBoosterPage = () => {
             </div>
           );
         case "price":
-          return <div className="text-white text-start">{`$${cellValue * .5}`}</div>;
+          return (
+            <div className="text-white text-start">{`$${cellValue * 0.5}`}</div>
+          );
         case "actions":
-          return orders.booster == sessionData?.user.id ? (
-            <div className="flex gap-2 justify-start items-center font-bold ">
-              <div className="hover:bg-red-500 px-5 cursor-pointer  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl  flex justify-center items-center  ">
-                <button className="">Open</button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex justify-start items-center font-bold text-[16px] ">
+          return orders.booster == null ? (
+            <div
+              onClick={() => handleClaim(orders.order_id)}
+              className="flex justify-start items-center font-bold text-[16px] "
+            >
               <button className=" px-5 hover:bg-button text-button bg-button/20 transform duration-300 hover:text-white rounded-2xl">
                 Claim
               </button>
             </div>
+          ) : (
+            <Link
+              to={`/booster/orders/${orders.order_id
+                .toString()
+                .padStart(5, "0")}`}
+            >
+              <div className="flex gap-2 justify-start items-center font-bold ">
+                <div className="hover:bg-red-500 px-5 cursor-pointer  text-[16px] text-red-500 bg-red-500/20 transform duration-300 hover:text-white  rounded-2xl  flex justify-center items-center  ">
+                  <button className="">Open</button>
+                </div>
+              </div>
+            </Link>
           );
         default:
           return cellValue;
@@ -309,7 +357,7 @@ const OrderBoosterPage = () => {
         </div>
         <div className="text-white flex items-center gap-3">
           <h1>Balance :</h1>
-          <h1 className="font-bold">124$</h1>
+          <h1 className="font-bold">$124</h1>
         </div>
         <IoNotifications className="text-[24px] cursor-pointer text-white" />
       </div>
@@ -319,26 +367,13 @@ const OrderBoosterPage = () => {
           bottomContentPlacement="outside"
           classNames={{ wrapper: "h-full p-0" }}
           bottomContent={
-            <div className="flex flex-wrap gap-4 items-center justify-center ">
-              {/* <Pagination
-                initialPage={1}
-                variant="bordered"
-                size="lg"
-                className="text-white rounded-lg bg-backgroundSecondary gap-10  "
-                classNames={{
-                  wrapper: "",
-                  item: "",
-                  cursor:
-                    "bg-button/80 rounded-lg bg-gradient-to-b shadow-lg from-default-500 to-default-800 dark:from-default-300 dark:to-default-100 text-white font-bold",
-                }}
-                showControls
-                isCompact
-                color="warning"
-                // page={page}
-                // total={pages}
-                // onChange={(page) => setPage(page)}
-              /> */}
-            </div>
+            data.length === 0 ? (
+              <div className="text-white pb-[20px] text-[14px] flex flex-wrap gap-4 items-center justify-center ">
+                Sorry, there are no matching records available at the moment.
+              </div>
+            ) : (
+              ""
+            )
           }
         >
           <TableHeader columns={columns}>

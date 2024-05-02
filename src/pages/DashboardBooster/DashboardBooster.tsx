@@ -7,7 +7,7 @@ import { FaGear } from "react-icons/fa6";
 import supabase from "../../config/supabase/supabase";
 
 import Cookies from "js-cookie";
-import { SocketContext } from "../../context/socket";
+// import { SocketContext } from "../../context/socket";
 
 interface MyComponentProps {
   children: ReactNode;
@@ -16,19 +16,19 @@ interface MyComponentProps {
 const DashboardBooster: React.FC<MyComponentProps> = ({ children }) => {
   const currentPath = window.location.pathname;
 
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
-  useEffect(() => {
-    socket.connect();
-    socket.on("session", ({ sessionID }) => {
-      socket.auth = { sessionID };
-      Cookies.set("session", sessionID);
-    });
+  // useEffect(() => {
+  //   // socket.connect();
+  //   socket.on("session", ({ sessionID }) => {
+  //     socket.auth = { sessionID };
+  //     Cookies.set("session", sessionID);
+  //   });
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className="h-screen   bg-backgroundSecondary flex ">
@@ -41,23 +41,15 @@ const DashboardBooster: React.FC<MyComponentProps> = ({ children }) => {
           </Link>
         </div>
         <div className="mt-[-200px]">
-          <Link to={"/dashboard"}>
+          <Link to={"/booster/orders"}>
             <div
               className={` ${
-                currentPath === "/dashboard" ? "text-button" : "text-secondary"
+                currentPath === "/booster/orders"
+                  ? "text-button"
+                  : "text-secondary"
               } py-4 px-[10px] hover:bg-slate-700  w-full flex justify-start items-center gap-5  cursor-pointer`}
             >
               <FaHome className="text-[18px]" />
-              <h1>Dashboard</h1>
-            </div>
-          </Link>
-          <Link to={"/order"}>
-            <div
-              className={` ${
-                currentPath === "/order" ? "text-button" : "text-secondary"
-              } py-4 px-[10px] hover:bg-slate-700  w-full flex justify-start items-center gap-5  cursor-pointer`}
-            >
-              <FaShoppingCart className="text-[18px]" />
               <h1>Orders</h1>
             </div>
           </Link>

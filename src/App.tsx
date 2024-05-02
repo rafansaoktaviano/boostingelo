@@ -20,12 +20,14 @@ function App() {
   const currentPath = window.location.pathname;
   const navigate = useNavigate();
   const urlParam = useMatch("/order/:id")?.pathname;
+  const urlParam2 = useMatch("/booster/orders/:id")?.pathname;
 
   return (
     <>
       {currentPath === "/dashboard" ||
       currentPath === "/order" ||
       currentPath === "/booster/orders" ||
+      currentPath === urlParam2 ||
       currentPath === urlParam ? (
         ""
       ) : (
@@ -35,6 +37,7 @@ function App() {
       {currentPath === "/dashboard" ||
       currentPath === "/order" ||
       currentPath === "/booster/orders" ||
+      currentPath === urlParam2 ||
       currentPath === urlParam ? (
         ""
       ) : (
