@@ -11,6 +11,7 @@ import OrderDetailsCustomerPage from "../pages/OrderDetailsCustomerPage/OrderDet
 import DashboardBooster from "../pages/DashboardBooster/DashboardBooster";
 import OrderBoosterPage from "../pages/OrderBoosterPage/OrderBoosterPage";
 import OrderDetailsBoosterPage from "../pages/OrderDetailsBoosterPage/OrderDetailsBoosterPage";
+import CompletedOrdersBooster from "../pages/CompletedOrdersBooster/CompletedOrdersBooster";
 
 const routes = [
   <Route path="/" element={<Home />} />,
@@ -58,6 +59,14 @@ const routes = [
     element={
       <DashboardBooster>
         <OrderDetailsBoosterPage />
+      </DashboardBooster>
+    }
+  />,
+  <Route
+    path="/booster/orders/completed"
+    element={
+      <DashboardBooster>
+        <CompletedOrdersBooster />
       </DashboardBooster>
     }
   />,

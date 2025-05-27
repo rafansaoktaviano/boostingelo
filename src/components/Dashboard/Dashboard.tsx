@@ -20,6 +20,7 @@ import valorantlogo from "./../../assets/valorantlogo.png";
 import dotalogo from "./../../assets/dota2logo.png";
 import lollogo from "./../../assets/lollogo.png";
 import tftlogo from "./../../assets/TFTlogo.png";
+import { useAppSelector } from "../../redux/App/hooks";
 
 interface RecentOrders {
   id: number;
@@ -60,6 +61,7 @@ const Dashboard = () => {
   const [typeRecentOrders, setTypeRecentOrders] =
     useState<string>("Rank Boost Orders");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const userData = useAppSelector((state) => state.user.userData);
 
   const flattenedData = recentOrders.map((item) => ({
     ...item,
@@ -70,8 +72,6 @@ const Dashboard = () => {
       )
       .join(", "),
   }));
-
-  console.log(flattenedData);
 
   const currentDate = new Date();
 
@@ -245,12 +245,15 @@ const Dashboard = () => {
     []
   );
 
+  console.log("userData", userData);
+  
+
   return (
     <div className="w-full  h-full  ">
       <div className="h-full flex flex-col ">
         <div className="text-white flex w-full items-center  justify-between mb-[50px]">
           <div>
-            <h1 className="font-bold text-[24px]">Hello, Rafansa Oktaviano</h1>
+            <h1 className="font-bold text-[24px]">Hello, {userData?.fullname || "Customer"}</h1>
             <p className="text-slate-400">{`Today is ${formattedDate}`}</p>
           </div>
           <div className="flex items-center gap-5">

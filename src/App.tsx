@@ -22,6 +22,22 @@ function App() {
   const urlParam = useMatch("/order/:id")?.pathname;
   const urlParam2 = useMatch("/booster/orders/:id")?.pathname;
 
+  const originalWarn = console.warn;
+
+  console.warn = (...args) => {
+    const [firstArg] = args;
+    if (
+      typeof firstArg === "string" &&
+      firstArg.includes(
+        "An aria-label or aria-labelledby prop is required for accessibility."
+      )
+    ) {
+      return;
+    }
+
+    originalWarn(...args);
+  };
+
   return (
     <>
       {currentPath === "/dashboard" ||

@@ -4,6 +4,7 @@ import { FaHome } from "react-icons/fa";
 import { ImExit } from "react-icons/im";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
+import { IoMdDoneAll } from "react-icons/io";
 import supabase from "../../config/supabase/supabase";
 
 import Cookies from "js-cookie";
@@ -29,6 +30,7 @@ const DashboardBooster: React.FC<MyComponentProps> = ({ children }) => {
   //     socket.disconnect();
   //   };
   // }, []);
+  console.log(currentPath);
 
   return (
     <div className="h-screen   bg-backgroundSecondary flex ">
@@ -51,6 +53,18 @@ const DashboardBooster: React.FC<MyComponentProps> = ({ children }) => {
             >
               <FaHome className="text-[18px]" />
               <h1>Orders</h1>
+            </div>
+          </Link>
+          <Link to={"/booster/orders/completed"}>
+            <div
+              className={`${
+                currentPath == "/booster/orders/completed"
+                  ? "text-button"
+                  : "text-secondary"
+              } py-4 px-[10px] hover:bg-slate-700  w-full flex justify-start items-center gap-5  cursor-pointer`}
+            >
+              <IoMdDoneAll className="text-[18px]" />
+              <h1>Completed Orders</h1>
             </div>
           </Link>
           <div className="py-4 px-[10px] hover:bg-slate-700 text-secondary w-full flex justify-start items-center gap-5  cursor-pointer">

@@ -295,7 +295,7 @@ const OrderDetailsCustomerPage = () => {
                   );
 
                   return (
-                    <div className="my-[10px]">
+                    <div key={index} className="my-[10px]">
                       {value.user_id === session?.user.id ? (
                         <>
                           <div className=" flex justify-end ">
@@ -406,56 +406,58 @@ const OrderDetailsCustomerPage = () => {
                   {data?.orders_details.map((value, index) => {
                     return (
                       <>
-                        {value.priority === true ? (
-                          <PopOver text="Duo Boost" style="bg-button">
-                            <FaRocket className="text-[32px] text-button  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.stream === true ? (
-                          <PopOver text="Stream" style="bg-purple-500">
-                            <CiStreamOn className="text-[32px] text-purple-400 font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.offline_chat === true ? (
-                          <PopOver text="Offline Chat" style="bg-slate-700">
-                            <IoChatbox className="text-[32px] text-slate-500  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.type_service === "Solo Boost" ? (
-                          <PopOver text="Solo Boost" style="bg-highlight">
-                            <BsPersonFill className="text-[32px] text-highlight  font-bold" />
-                          </PopOver>
-                        ) : value.type_service === "Duo Boost" ? (
-                          <PopOver text="Duo Boost" style="bg-highlight">
-                            <IoMdPeople className="text-[32px] text-highlight  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.win_match > 0 ? (
-                          <PopOver
-                            text={`+ ${value.win_match} WIN`}
-                            style="bg-yellow-600"
-                          >
-                            <FaPlus className="text-[32px] text-yellow-600  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
+                        <span key={index}>
+                          {value.priority === true ? (
+                            <PopOver text="Duo Boost" style="bg-button">
+                              <FaRocket className="text-[32px] text-button  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.stream === true ? (
+                            <PopOver text="Stream" style="bg-purple-500">
+                              <CiStreamOn className="text-[32px] text-purple-400 font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.offline_chat === true ? (
+                            <PopOver text="Offline Chat" style="bg-slate-700">
+                              <IoChatbox className="text-[32px] text-slate-500  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.type_service === "Solo Boost" ? (
+                            <PopOver text="Solo Boost" style="bg-highlight">
+                              <BsPersonFill className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
+                          ) : value.type_service === "Duo Boost" ? (
+                            <PopOver text="Duo Boost" style="bg-highlight">
+                              <IoMdPeople className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.win_match > 0 ? (
+                            <PopOver
+                              text={`+ ${value.win_match} WIN`}
+                              style="bg-yellow-600"
+                            >
+                              <FaPlus className="text-[32px] text-yellow-600  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
 
-                        {value.no_stack === true ? (
-                          <PopOver text="No 5 Stack" style="bg-red-500">
-                            <MdError className="text-[32px] text-red-500  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
+                          {value.no_stack === true ? (
+                            <PopOver text="No 5 Stack" style="bg-red-500">
+                              <MdError className="text-[32px] text-red-500  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                        </span>
                       </>
                     );
                   })}

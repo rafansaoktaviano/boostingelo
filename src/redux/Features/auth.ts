@@ -1,16 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+interface UserData {
+  id: string;
+  fullname: string;
+  email?: string;
+  avatar_url: string;
+}
 
-interface userState {
+interface UserState {
   isLogin: boolean;
   email?: string;
   status: string;
+  userData: UserData | null;
 }
 
-const initialState: userState = {
+const initialState: UserState = {
   isLogin: false,
   email: "",
   status: "",
+  userData: null,
 };
 
 export const userSlice = createSlice({
@@ -26,8 +34,12 @@ export const userSlice = createSlice({
     setStatus: (initialState, action: PayloadAction<string>) => {
       initialState.status = action.payload;
     },
+    setUserData: (initialState, action: PayloadAction<UserData | null>) => {
+      initialState.userData = action.payload;
+    },
   },
 });
 
-export const { setIsLogin, setEmail, setStatus } = userSlice.actions;
-export default userSlice.reducer
+export const { setUserData, setIsLogin, setEmail, setStatus } =
+  userSlice.actions;
+export default userSlice.reducer;

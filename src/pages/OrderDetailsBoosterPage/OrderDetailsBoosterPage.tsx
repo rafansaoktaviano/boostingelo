@@ -448,56 +448,58 @@ const OrderDetailsBoosterPage = () => {
                   {data?.orders_details.map((value, index) => {
                     return (
                       <>
-                        {value.priority === true ? (
-                          <PopOver text="Duo Boost" style="bg-button">
-                            <FaRocket className="text-[32px] text-button  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.stream === true ? (
-                          <PopOver text="Stream" style="bg-purple-500">
-                            <CiStreamOn className="text-[32px] text-purple-400 font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.offline_chat === true ? (
-                          <PopOver text="Offline Chat" style="bg-slate-700">
-                            <IoChatbox className="text-[32px] text-slate-500  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.type_service === "Solo Boost" ? (
-                          <PopOver text="Solo Boost" style="bg-highlight">
-                            <BsPersonFill className="text-[32px] text-highlight  font-bold" />
-                          </PopOver>
-                        ) : value.type_service === "Duo Boost" ? (
-                          <PopOver text="Duo Boost" style="bg-highlight">
-                            <IoMdPeople className="text-[32px] text-highlight  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
-                        {value.win_match > 0 ? (
-                          <PopOver
-                            text={`+ ${value.win_match} WIN`}
-                            style="bg-yellow-600"
-                          >
-                            <FaPlus className="text-[32px] text-yellow-600  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
+                        <span key={index}>
+                          {value.priority === true ? (
+                            <PopOver text="Duo Boost" style="bg-button">
+                              <FaRocket className="text-[32px] text-button  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.stream === true ? (
+                            <PopOver text="Stream" style="bg-purple-500">
+                              <CiStreamOn className="text-[32px] text-purple-400 font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.offline_chat === true ? (
+                            <PopOver text="Offline Chat" style="bg-slate-700">
+                              <IoChatbox className="text-[32px] text-slate-500  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.type_service === "Solo Boost" ? (
+                            <PopOver text="Solo Boost" style="bg-highlight">
+                              <BsPersonFill className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
+                          ) : value.type_service === "Duo Boost" ? (
+                            <PopOver text="Duo Boost" style="bg-highlight">
+                              <IoMdPeople className="text-[32px] text-highlight  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                          {value.win_match > 0 ? (
+                            <PopOver
+                              text={`+ ${value.win_match} WIN`}
+                              style="bg-yellow-600"
+                            >
+                              <FaPlus className="text-[32px] text-yellow-600  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
 
-                        {value.no_stack === true ? (
-                          <PopOver text="No 5 Stack" style="bg-red-500">
-                            <MdError className="text-[32px] text-red-500  font-bold" />
-                          </PopOver>
-                        ) : (
-                          ""
-                        )}
+                          {value.no_stack === true ? (
+                            <PopOver text="No 5 Stack" style="bg-red-500">
+                              <MdError className="text-[32px] text-red-500  font-bold" />
+                            </PopOver>
+                          ) : (
+                            ""
+                          )}
+                        </span>
                       </>
                     );
                   })}
@@ -505,47 +507,49 @@ const OrderDetailsBoosterPage = () => {
               </div>
             </div>
           </div>
-          <div className="table-container h-auto py-[20px] mt-[20px] px-[20px]">
-            <h1 className="text-white text-center font-bold">Submit Match</h1>
-            <div className="flex gap-5 mt-[10px] mb-[20px]">
-              <div className="w-[75%] flex flex-col items-cetner gap-2">
-                <h1 className="text-highlight text-center font-bold">RANK</h1>
-                <input
-                  type="text"
-                  id="Rank-input"
-                  className="bg-gray-50/50 border text-white placeholder-white/80 border-gray-300/50  text-sm rounded-xl  block w-full px-[20px] py-2 "
-                  placeholder="Ex: Ascendant 2"
-                  onChange={(e) => setRank(e.target.value)}
-                />
+          <>
+            <div className="table-container h-auto py-[20px] mt-[20px] px-[20px]">
+              <h1 className="text-white text-center font-bold">Submit Match</h1>
+              <div className="flex gap-5 mt-[10px] mb-[20px]">
+                <div className="w-[75%] flex flex-col items-cetner gap-2">
+                  <h1 className="text-highlight text-center font-bold">RANK</h1>
+                  <input
+                    type="text"
+                    id="Rank-input"
+                    className="bg-gray-50/50 border text-white placeholder-white/80 border-gray-300/50  text-sm rounded-xl  block w-full px-[20px] py-2 "
+                    placeholder="Ex: Ascendant 2"
+                    onChange={(e) => setRank(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <h1 className="text-highlight text-center font-bold ">
+                    RATING
+                  </h1>
+                  <input
+                    type="number"
+                    id="RR-input"
+                    className="bg-gray-50/50 border text-white placeholder-white/80 border-gray-300/50  text-sm rounded-xl  block w-full px-[20px]  py-2"
+                    placeholder="Ex: 50"
+                    onChange={(e) => setRR(parseInt(e.target.value))}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col items-center gap-2">
-                <h1 className="text-highlight text-center font-bold ">
-                  RATING
-                </h1>
-                <input
-                  type="number"
-                  id="RR-input"
-                  className="bg-gray-50/50 border text-white placeholder-white/80 border-gray-300/50  text-sm rounded-xl  block w-full px-[20px]  py-2"
-                  placeholder="Ex: 50"
-                  onChange={(e) => setRR(parseInt(e.target.value))}
-                />
-              </div>
+              <button
+                onClick={() => handleSubmitmatch()}
+                className="w-full hover:scale-105 transform   duration-300 text-white cursor-pointer py-2 bg-button rounded-xl mb-[20px] font-bold"
+              >
+                Submit
+              </button>
             </div>
-            <button
-              onClick={() => handleSubmitmatch()}
-              className="w-full hover:scale-105 transform   duration-300 text-white cursor-pointer py-2 bg-button rounded-xl mb-[20px] font-bold"
-            >
-              Submit
-            </button>
-          </div>
-          <div className="table-container h-auto py-[20px] mt-[20px]  p-[20px]">
-            <button
-              onClick={() => handleCompleteOrder()}
-              className="w-full hover:scale-105 transform   duration-300 text-white cursor-pointer py-2 bg-button rounded-xl  font-bold"
-            >
-              Complete Order
-            </button>
-          </div>
+            <div className="table-container h-auto py-[20px] mt-[20px]  p-[20px]">
+              <button
+                onClick={() => handleCompleteOrder()}
+                className="w-full hover:scale-105 transform   duration-300 text-white cursor-pointer py-2 bg-button rounded-xl  font-bold"
+              >
+                Complete Order
+              </button>
+            </div>
+          </>
         </div>
       </div>
     </div>

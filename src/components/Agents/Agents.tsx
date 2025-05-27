@@ -73,6 +73,7 @@ const Agents: React.FC<AgentsProps> = ({ agents, order_id }) => {
         {valorantAgents.map((value, index) => {
           return (
             <div
+              key={index}
               onClick={() => handleSelectAgents(value)}
               className={`${
                 selectedAgents?.includes(value)

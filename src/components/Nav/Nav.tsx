@@ -45,14 +45,14 @@ const Nav = () => {
           isMenuOpen === true ? "text-white show-li" : ""
         } nav-list flex gap-[40px] font-semibold`}
       >
-        <Link to={"league-of-legends/elo-boost"}>
+        {/* <Link to={"league-of-legends/elo-boost"}>
           <li className="hover:text-white">League of Legends</li>
-        </Link>
+        </Link> */}
         <Link to={"valorant/elo-boost"}>
-          <li className="hover:text-white">Valorant</li>
+        <li className="hover:text-white">Valorant</li>
         </Link>
-        <li className="hover:text-white">Teamfight Tactics</li>
-        <li className="hover:text-white">Dota 2</li>
+        {/* <li className="hover:text-white">Teamfight Tactics</li>
+        <li className="hover:text-white">Dota 2</li> */}
       </ul>
       <div
         className={`${isMenuOpen === true ? "wrap-burger2" : ""} wrap-burger`}

@@ -233,7 +233,7 @@ const OrdersCustomerPage = () => {
                   (value: OrderDetails, index: number) => {
                     return (
                       <>
-                        <div className="flex gap-2 justify-center items-center text-[12px] ">
+                        <div key={index} className="flex gap-2 justify-center items-center text-[12px] ">
                           {value.priority === true ? (
                             <PopOver text="Duo Boost" style="bg-button">
                               <FaRocket className="text-[32px] text-button  font-bold" />

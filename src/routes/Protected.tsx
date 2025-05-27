@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
 
-const Protected = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+interface ProtectedRouteProps {
+  children: JSX.Element;
+  allowedRoles?: Array<"customer" | "booster">;
 }
 
-export default Protected
+const Protected = ({ children, allowedRoles }: ProtectedRouteProps) => {
+  return children;
+};
+
+export default Protected;
