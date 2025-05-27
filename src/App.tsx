@@ -7,13 +7,13 @@ import {
   useNavigate,
   useResolvedPath,
 } from "react-router-dom";
-import routes from "./routes/routes";
 import Nav from "./components/Nav/Nav";
 import Footer from "./components/Footer/Footer";
 import supabase from "./config/supabase/supabase";
 import { setIsLogin } from "./redux/Features/auth";
 import { useAppDispatch } from "./redux/App/hooks";
 import { toastError } from "./utils/toast";
+import AppRoutes from "./routes/routes";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -38,27 +38,18 @@ function App() {
     originalWarn(...args);
   };
 
+  const isDashboardPage =
+    currentPath === "/dashboard" ||
+    currentPath === "/order" ||
+    currentPath === "/booster/orders" ||
+    currentPath === urlParam ||
+    currentPath === urlParam2;
+
   return (
     <>
-      {currentPath === "/dashboard" ||
-      currentPath === "/order" ||
-      currentPath === "/booster/orders" ||
-      currentPath === urlParam2 ||
-      currentPath === urlParam ? (
-        ""
-      ) : (
-        <Nav />
-      )}
-      <Routes>{routes.map((value) => value)}</Routes>
-      {currentPath === "/dashboard" ||
-      currentPath === "/order" ||
-      currentPath === "/booster/orders" ||
-      currentPath === urlParam2 ||
-      currentPath === urlParam ? (
-        ""
-      ) : (
-        <Footer />
-      )}
+      {!isDashboardPage && <Nav />}
+      <AppRoutes />
+      {!isDashboardPage && <Footer />}
     </>
   );
 }

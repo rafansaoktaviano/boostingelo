@@ -12,6 +12,7 @@ interface UserState {
   email?: string;
   status: string;
   userData: UserData | null;
+  role: string | null;
 }
 
 const initialState: UserState = {
@@ -19,6 +20,7 @@ const initialState: UserState = {
   email: "",
   status: "",
   userData: null,
+  role: null,
 };
 
 export const userSlice = createSlice({
@@ -37,9 +39,33 @@ export const userSlice = createSlice({
     setUserData: (initialState, action: PayloadAction<UserData | null>) => {
       initialState.userData = action.payload;
     },
+    setRole: (initialState, action: PayloadAction<string>) => {
+      switch (action.payload) {
+        case "Booster Valorant":
+        case "Booster Dota 2":
+        case "Booster League of Legends":
+        case "Booster Teamfight Tactics":
+          initialState.role = "booster";
+          break;
+        case "Customer":
+          initialState.role = "customer";
+          break;
+        case "Admin":
+          initialState.role = "admin";
+          break;
+        case "Owner":
+          initialState.role = "owner";
+          break;
+        default:
+          initialState.role = "customer";
+          break;
+      }
+
+      console.log(initialState.role);
+    },
   },
 });
 
-export const { setUserData, setIsLogin, setEmail, setStatus } =
+export const { setRole, setUserData, setIsLogin, setEmail, setStatus } =
   userSlice.actions;
 export default userSlice.reducer;

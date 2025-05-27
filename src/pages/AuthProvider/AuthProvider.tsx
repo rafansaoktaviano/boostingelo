@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ReactNode, useContext } from "react";
 import supabase from "../../config/supabase/supabase";
-import { setIsLogin, setUserData } from "../../redux/Features/auth";
+import { setIsLogin, setRole, setUserData } from "../../redux/Features/auth";
 import { useAppDispatch } from "../../redux/App/hooks";
 import { useNavigate } from "react-router-dom";
 import { createContext } from "vm";
@@ -16,19 +16,34 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function fetchInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      let { data: dataRole, error: error } = await supabase
+        .from("users_details")
+        .select("role")
+        .eq("id", session?.user?.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching role:", error);
+        dispatch(setRole("customer"));
+      } else {
+        dispatch(setRole(dataRole?.role || null));
+        dispatch(setIsLogin(true));
+      }
+    }
+
+    fetchInitialSession();
+
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       const user = session?.user;
       console.log("session", session);
-      
-      if (session) {
-        dispatch(setIsLogin(true));
-      } else {
-        dispatch(setIsLogin(false));
-      }
 
       if (event === "TOKEN_REFRESHED" || event === "SIGNED_IN") {
         Cookies.set("token", session?.access_token || "");
-
         if (user) {
           dispatch(
             setUserData({
@@ -41,10 +56,17 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
         }
       }
 
+      if (session) {
+        dispatch(setIsLogin(true));
+      } else {
+        dispatch(setRole("Customer"));
+        dispatch(setIsLogin(false));
+      }
+
       if (event === "SIGNED_OUT") {
         toastSuccess("Logout Success!");
         navigate("/");
-        dispatch(setUserData(null))
+        dispatch(setUserData(null));
         Cookies.remove("token");
       }
     });
