@@ -59,7 +59,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
     let { data, error } = await supabase.auth.resetPasswordForEmail(
       forgotEmail,
-      { redirectTo: process.env.REACT_APP_BASE_URL }
+      { redirectTo: "https://boostingelo-client.vercel.app" }
     );
 
     if (error) {
