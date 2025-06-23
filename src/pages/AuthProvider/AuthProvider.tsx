@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<MyComponentProps> = ({ children }) => {
       if (session) {
         dispatch(setIsLogin(true));
       } else {
-        dispatch(setRole("Customer"));
+        dispatch(setRole("customer"));
         dispatch(setIsLogin(false));
       }
 

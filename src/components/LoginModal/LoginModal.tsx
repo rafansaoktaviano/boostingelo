@@ -59,7 +59,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
 
     let { data, error } = await supabase.auth.resetPasswordForEmail(
       forgotEmail,
-      { redirectTo: "http://localhost:3000" }
+      { redirectTo: process.env.REACT_APP_BASE_URL }
     );
 
     if (error) {
