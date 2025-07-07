@@ -57,7 +57,7 @@ export const userSlice = createSlice({
           initialState.role = "owner";
           break;
         default:
-          initialState.role = "customer";
+          initialState.role = "Not Login";
           break;
       }
 

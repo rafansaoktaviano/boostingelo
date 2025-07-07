@@ -318,7 +318,7 @@ const OrderDetailsBoosterPage = () => {
                       <>
                         <div className=" flex justify-end ">
                           <p className="text-white text-[12px]">
-                            {`(${value.users_details.role}) ${value.users_details.nickname}`}
+                            {`(${value.users_details.role}) ${value.users_details.nickname || ""}`}
                           </p>
                         </div>
                         <div className=" flex justify-end ">
@@ -336,7 +336,7 @@ const OrderDetailsBoosterPage = () => {
                       <>
                         <div className=" flex justify-start ">
                           <p className="text-white text-[12px]">
-                            {value.message}
+                            {value.users_details.nickname || "(Customer)"}
                           </p>
                         </div>
                         <div className=" flex justify-start ">

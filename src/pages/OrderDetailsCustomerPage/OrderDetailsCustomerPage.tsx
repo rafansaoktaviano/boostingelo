@@ -107,6 +107,9 @@ const OrderDetailsCustomerPage = () => {
       const session = await supabase.auth.getSession();
       setSession(session.data.session);
 
+      console.log('session', session);
+      
+
       let { data: orders, error } = await supabase
         .from("orders")
         .select(
@@ -120,6 +123,8 @@ const OrderDetailsCustomerPage = () => {
         return console.log("Error!");
       }
       if (orders) {
+        console.log(data);
+        
         setData(orders);
         setUsername(orders.username);
         setPassword(orders.password);
@@ -303,7 +308,7 @@ const OrderDetailsCustomerPage = () => {
                         <>
                           <div className=" flex justify-end ">
                             <p className="text-white text-[12px]">
-                              {`(${value.users_details.role}) ${value.users_details.nickname}`}
+                              {`(${value.users_details.role}) ${value.users_details.nickname || ""}`}
                             </p>
                           </div>
                           <div className=" flex justify-end ">
@@ -321,7 +326,7 @@ const OrderDetailsCustomerPage = () => {
                         <>
                           <div className=" flex justify-start ">
                             <p className="text-white text-[12px]">
-                              {value.message}
+                              {value.users_details.nickname || "(Customer)"}
                             </p>
                           </div>
                           <div className=" flex justify-start ">
