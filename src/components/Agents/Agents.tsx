@@ -32,7 +32,7 @@ const Agents: React.FC<AgentsProps> = ({ agents, order_id }) => {
 
   const handleSelectAgents = (value: string) => {
     setSelectedAgents((prevAgents) => {
-      if (prevAgents.includes(value)) {
+      if (prevAgents?.includes(value)) {
         return prevAgents.filter((agent) => agent !== value);
       } else {
         return [...prevAgents, value];

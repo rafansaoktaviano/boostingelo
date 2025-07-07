@@ -325,7 +325,7 @@ const OrderDetailsBoosterPage = () => {
                               value.users_details.nickname ||
                               (value.user_id === session?.user.id &&
                                 role === "booster")
-                                ? "Booster"
+                                ? ""
                                 : "Customer"
                             }`}
                           </p>
