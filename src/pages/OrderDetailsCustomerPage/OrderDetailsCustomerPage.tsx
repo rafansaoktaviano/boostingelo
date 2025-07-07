@@ -24,6 +24,7 @@ import { FaRocket } from "react-icons/fa";
 import { MdError } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import Notes from "../../components/Notes/Notes";
+import { useAppSelector } from "../../redux/App/hooks";
 
 export interface Orders {
   order_id: number;
@@ -68,13 +69,14 @@ interface message {
 }
 
 type SupabaseSession = import("@supabase/supabase-js").Session | null;
-
+type Role = "customer" | "booster" | "admin" | "owner" | null;
 export interface UsersDetails {
   role: string;
   nickname: string;
 }
 
 const OrderDetailsCustomerPage = () => {
+  const role = useAppSelector((state) => state.user.role) as Role;
   const [data, setData] = useState<Orders | null>(null);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -308,7 +310,7 @@ const OrderDetailsCustomerPage = () => {
                         <>
                           <div className=" flex justify-end ">
                             <p className="text-white text-[12px]">
-                              {`(${value.users_details.role}) ${value.users_details.nickname || ""}`}
+                              {`(${value.users_details.role}) ${value.users_details.nickname || (value.user_id === session?.user.id && role === "booster" ? "Booster" : "Customer")}`}
                             </p>
                           </div>
                           <div className=" flex justify-end ">
@@ -326,7 +328,7 @@ const OrderDetailsCustomerPage = () => {
                         <>
                           <div className=" flex justify-start ">
                             <p className="text-white text-[12px]">
-                              {value.users_details.nickname || "(Customer)"}
+                            {value.users_details.nickname || (value.user_id === session?.user.id && role === "booster" ? "Booster" : "Customer")}
                             </p>
                           </div>
                           <div className=" flex justify-start ">
