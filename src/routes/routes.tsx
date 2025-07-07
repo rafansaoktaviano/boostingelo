@@ -25,9 +25,12 @@ export default function AppRoutes() {
       <Route path="valorant/win-boost" element={<ValorantWinBoost />} />
       <Route path="valorant/placement-boost" element={<ValorantPlacementBoost />} />
 
+      <Route element={<Protected allowedRoles={["customer", "booster"]} />}>
+        <Route path="/dashboard" element={<DashboardCustomer><Dashboard /></DashboardCustomer>} />
+      </Route>
+
       {/* Customer Protected Routes */}
       <Route element={<Protected allowedRoles={["customer"]} />}>
-        <Route path="/dashboard" element={<DashboardCustomer><Dashboard /></DashboardCustomer>} />
         <Route path="/order" element={<DashboardCustomer><OrdersCustomerPage /></DashboardCustomer>} />
         <Route path="/order/:id" element={<DashboardCustomer><OrderDetailsCustomerPage /></DashboardCustomer>} />
       </Route>

@@ -138,7 +138,7 @@ const OrderDetailsCustomerPage = () => {
   };
 
   useEffect(() => {
-    supabase
+    const channel = supabase
       .channel(id as string)
       .on(
         "postgres_changes",
@@ -154,6 +154,9 @@ const OrderDetailsCustomerPage = () => {
     fetch();
     fetchMessages();
 
+    return () => {
+      channel.unsubscribe();
+    };
     // socket.emit("join", parseInt(id as string));
     // socket.on("message sent", (msg) => {
     //   // fetchMessages();
