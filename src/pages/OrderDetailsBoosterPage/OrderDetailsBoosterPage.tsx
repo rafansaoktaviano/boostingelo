@@ -363,7 +363,7 @@ const OrderDetailsBoosterPage = () => {
                 id="send-message"
                 className="bg-gray-50/50 border text-white placeholder-white/80 border-gray-300/50  text-sm rounded-3xl  block w-full px-[20px] py-2 "
                 placeholder="Send message"
-                defaultValue={message}
+                value={message}
               />
               <button
                 type="submit"
