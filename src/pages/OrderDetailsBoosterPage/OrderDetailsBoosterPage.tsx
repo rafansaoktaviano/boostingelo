@@ -321,13 +321,7 @@ const OrderDetailsBoosterPage = () => {
                       <>
                         <div className=" flex justify-end ">
                           <p className="text-white text-[12px]">
-                            {`(${value.users_details.role}) ${
-                              value.users_details.nickname ||
-                              (value.user_id === session?.user.id &&
-                                role === "booster")
-                                ? ""
-                                : "Customer"
-                            }`}
+                            {`${value.users_details.role}`}
                           </p>
                         </div>
                         <div className=" flex justify-end ">
@@ -345,11 +339,7 @@ const OrderDetailsBoosterPage = () => {
                       <>
                         <div className=" flex justify-start ">
                           <p className="text-white text-[12px]">
-                            {value.users_details.nickname ||
-                            (value.user_id === session?.user.id &&
-                              role === "booster")
-                              ? "Booster"
-                              : "Customer"}
+                            {value.users_details.nickname || value.users_details.role}
                           </p>
                         </div>
                         <div className=" flex justify-start ">
