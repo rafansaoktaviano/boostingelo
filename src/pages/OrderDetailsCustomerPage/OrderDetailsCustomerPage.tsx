@@ -310,7 +310,7 @@ const OrderDetailsCustomerPage = () => {
                         <>
                           <div className=" flex justify-end ">
                             <p className="text-white text-[12px]">
-                              {`(${value.users_details.role})`}
+                              {`${value.users_details.role}`}
                             </p>
                           </div>
                           <div className=" flex justify-end ">
