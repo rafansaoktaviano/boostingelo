@@ -11,6 +11,8 @@ import { setIsLogin } from "../../redux/Features/auth";
 import { toastSuccess } from "../../utils/toast";
 import { Link, useNavigate } from "react-router-dom";
 
+type Role = "customer" | "booster" | "admin" | "owner" | null;
+
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
@@ -20,6 +22,7 @@ const Nav = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLogin = useAppSelector((state) => state.user.isLogin);
+  const role = useAppSelector((state) => state.user.role) as Role;
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -81,7 +84,7 @@ const Nav = () => {
             {isHovering && (
               <div className=" bg-background dropdown-menu text-white rounded-xl">
                 <ul>
-                  <Link to={"/dashboard"}>
+                  <Link to={role === "booster" || role === "admin" || role === "owner" ?  "/dashboard" : "/booster/orders"}>
                     <li className="hover:bg-slate-700 rounded-xl cursor-pointer ">
                       <a>Dashboard</a>
                     </li>
