@@ -84,7 +84,7 @@ const Nav = () => {
             {isHovering && (
               <div className=" bg-background dropdown-menu text-white rounded-xl">
                 <ul>
-                  <Link to={role === "booster" || role === "admin" || role === "owner" ?  "/dashboard" : "/booster/orders"}>
+                  <Link to={role === "booster" || role === "admin" || role === "owner" ?  "/booster/orders" : "/dashboard"}>
                     <li className="hover:bg-slate-700 rounded-xl cursor-pointer ">
                       <a>Dashboard</a>
                     </li>
